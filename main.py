@@ -1,7 +1,5 @@
-import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QMainWindow
 from main_window import Ui_MainWindow
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -52,8 +50,8 @@ class MainWindow(QMainWindow):
         # Default page
         self.showDashboard()
 
-    # Reset all button styles to default
     def resetButtonStyles(self):
+        """Reset all button styles to default"""
         for btn in self.nav_buttons:
             btn.setStyleSheet(self.default_style)
 
@@ -71,10 +69,3 @@ class MainWindow(QMainWindow):
         self.ui.stackedWidget.setCurrentWidget(self.ui.Reserve)
         self.resetButtonStyles()
         self.ui.reserve_btn.setStyleSheet(self.active_style)
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())
