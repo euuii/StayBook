@@ -7,7 +7,7 @@ from login_dialog import Ui_Dialog
 from main_window import Ui_MainWindow
 
 # SQLite database will live next to this file (no manual setup needed)
-DB_PATH = Path(__file__).resolve().parent / "hotel_auth.db"
+DB_PATH = Path(__file__).resolve().parent / "accounts.db"
 
 
 def init_db():
@@ -39,6 +39,7 @@ def create_user(username: str, password: str) -> tuple[bool, str]:
             conn.commit()
         return True, "Account created successfully. You can now log in."
     except sqlite3.IntegrityError:
+        #runs if the username already exists in the database
         return False, "Username already exists. Please choose another one."
 
 
