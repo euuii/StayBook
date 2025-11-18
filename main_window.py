@@ -34,7 +34,7 @@ class Ui_MainWindow(object):
 "padding: 15px;\n"
 "border-radius: 10px ")
         self.logo.setText("")
-        self.logo.setPixmap(QtGui.QPixmap("../57456f52/resort (3).png"))
+        self.logo.setPixmap(QtGui.QPixmap("icons/resort (3).png"))
         self.logo.setObjectName("logo")
         self.horizontalLayout_7.addWidget(self.logo)
         self.gridLayout_4 = QtWidgets.QGridLayout()
@@ -59,11 +59,11 @@ class Ui_MainWindow(object):
         self.label_6.setObjectName("label_6")
         self.gridLayout_4.addWidget(self.label_6, 1, 1, 1, 1)
         self.horizontalLayout_7.addLayout(self.gridLayout_4)
-        self.pushButton = QtWidgets.QPushButton(parent=self.groupBox)
+        self.logout_btn = QtWidgets.QPushButton(parent=self.groupBox)
         font = QtGui.QFont()
-        font.setPointSize(14)
-        self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("QPushButton{\n"
+        font.setPointSize(12)
+        self.logout_btn.setFont(font)
+        self.logout_btn.setStyleSheet("QPushButton{\n"
 "    background: transparent;    \n"
 "    border: 1px solid rgb(255, 255, 255);\n"
 "    color: rgb(255, 255, 255);\n"
@@ -74,10 +74,10 @@ class Ui_MainWindow(object):
 "    background: rgba(255, 255, 255, 0.2);\n"
 "}")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../c954c837/logout32white.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.On)
-        self.pushButton.setIcon(icon)
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout_7.addWidget(self.pushButton)
+        icon.addPixmap(QtGui.QPixmap("icons/logout32white.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.On)
+        self.logout_btn.setIcon(icon)
+        self.logout_btn.setObjectName("logout_btn")
+        self.horizontalLayout_7.addWidget(self.logout_btn)
         spacerItem3 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_7.addItem(spacerItem3)
         self.verticalLayout_3.addWidget(self.groupBox)
@@ -288,7 +288,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p>STAYBOOK</p></body></html>"))
         self.label_6.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">Welcome, Username</span></p></body></html>"))
-        self.pushButton.setText(_translate("MainWindow", "Log Out"))
+        self.logout_btn.setText(_translate("MainWindow", "Log Out"))
         self.dashboard_btn.setText(_translate("MainWindow", "Dashboard"))
         self.room_btn.setText(_translate("MainWindow", "Room Management"))
         self.reserve_btn.setText(_translate("MainWindow", "Reservation"))

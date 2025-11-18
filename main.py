@@ -50,6 +50,8 @@ class MainWindow(QMainWindow):
         # Default page
         self.showDashboard()
 
+        self.ui.logout_btn.clicked.connect(self.close)
+
     def resetButtonStyles(self):
         """Reset all button styles to default"""
         for btn in self.nav_buttons:

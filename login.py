@@ -59,12 +59,12 @@ class LoginDialog(QDialog):
         self.ui.setupUi(self)
 
         # Switch between Login and Sign-up pages (stacked widget)
-        self.ui.reg_btn.clicked.connect(self.show_signup_page)
-        self.ui.pushButton.clicked.connect(self.show_login_page)
+        self.ui.signuppage_btn.clicked.connect(self.show_signup_page)
+        self.ui.loginpage_btn.clicked.connect(self.show_login_page)
 
         # Handle primary actions
         self.ui.login_btn.clicked.connect(self.handle_login)
-        self.ui.pushButton_2.clicked.connect(self.handle_signup)
+        self.ui.signup_btn.clicked.connect(self.handle_signup)
 
     def show_signup_page(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.signup_page)

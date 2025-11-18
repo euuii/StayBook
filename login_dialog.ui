@@ -37,6 +37,12 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QGroupBox" name="groupBox">
+     <property name="styleSheet">
+      <string notr="true">QGroupBox{
+	background: transparent;
+	border: none
+}</string>
+     </property>
      <property name="title">
       <string/>
      </property>
@@ -80,6 +86,7 @@
         <property name="styleSheet">
          <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 30px;
+
 </string>
         </property>
         <property name="frameShape">
@@ -125,6 +132,13 @@ border-radius: 30px;
        </spacer>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
     </widget>
    </item>
    <item>
@@ -222,6 +236,9 @@ QPushButton{
               <pointsize>11</pointsize>
              </font>
             </property>
+            <property name="placeholderText">
+             <string>Enter your username</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -245,6 +262,9 @@ QPushButton{
             </property>
             <property name="echoMode">
              <enum>QLineEdit::EchoMode::Password</enum>
+            </property>
+            <property name="placeholderText">
+             <string>Enter your password</string>
             </property>
            </widget>
           </item>
@@ -290,32 +310,30 @@ QPushButton{
            </spacer>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLabel" name="label_5">
-              <property name="font">
-               <font>
-                <pointsize>11</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;No account yet?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="reg_btn">
-              <property name="font">
-               <font>
-                <pointsize>11</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Sign Up</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QPushButton" name="signuppage_btn">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+              <bold>false</bold>
+              <underline>true</underline>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	background: transparent;
+	color: rgb(0, 0, 0);
+	border: none
+}
+
+QPushButton::hover {
+	
+	color: rgb(0, 85, 255);
+}</string>
+            </property>
+            <property name="text">
+             <string>No account yet? Sign Up</string>
+            </property>
+           </widget>
           </item>
           <item>
            <spacer name="verticalSpacer_4">
@@ -399,6 +417,9 @@ QPushButton{
               <pointsize>11</pointsize>
              </font>
             </property>
+            <property name="placeholderText">
+             <string>Enter your username</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -420,6 +441,9 @@ QPushButton{
               <pointsize>11</pointsize>
              </font>
             </property>
+            <property name="placeholderText">
+             <string>Enter your password</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -436,7 +460,7 @@ QPushButton{
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="signup_btn">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -461,32 +485,30 @@ QPushButton{
            </spacer>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QLabel" name="label_8">
-              <property name="font">
-               <font>
-                <pointsize>11</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Already have an account?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton">
-              <property name="font">
-               <font>
-                <pointsize>11</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Log In</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QPushButton" name="loginpage_btn">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+              <italic>false</italic>
+              <underline>true</underline>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	background: transparent;
+	color: rgb(0, 0, 0);
+	border: none
+}
+
+QPushButton::hover {
+	
+	color: rgb(0, 85, 255);
+}</string>
+            </property>
+            <property name="text">
+             <string>Already have an account? Log In</string>
+            </property>
+           </widget>
           </item>
           <item>
            <spacer name="verticalSpacer_6">

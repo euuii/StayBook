@@ -24,6 +24,10 @@ class Ui_Dialog(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.groupBox = QtWidgets.QGroupBox(parent=Dialog)
+        self.groupBox.setStyleSheet("QGroupBox{\n"
+"    background: transparent;\n"
+"    border: none\n"
+"}")
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.groupBox)
@@ -40,6 +44,7 @@ class Ui_Dialog(object):
         self.frame.setMaximumSize(QtCore.QSize(70, 70))
         self.frame.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "border-radius: 30px;\n"
+"\n"
 "")
         self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
@@ -49,7 +54,7 @@ class Ui_Dialog(object):
         self.label = QtWidgets.QLabel(parent=self.frame)
         self.label.setStyleSheet("background: transparent")
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("../5ef4b916/resort64.png"))
+        self.label.setPixmap(QtGui.QPixmap("icons/resort64.png"))
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
@@ -57,6 +62,11 @@ class Ui_Dialog(object):
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.verticalLayout_2.addWidget(self.groupBox)
+        self.line = QtWidgets.QFrame(parent=Dialog)
+        self.line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout_2.addWidget(self.line)
         self.label_2 = QtWidgets.QLabel(parent=Dialog)
         font = QtGui.QFont()
         font.setFamily("AQUARIUM")
@@ -134,21 +144,24 @@ class Ui_Dialog(object):
         self.verticalLayout_4.addWidget(self.login_btn)
         spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem4)
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.label_5 = QtWidgets.QLabel(parent=self.groupBox_2)
+        self.signuppage_btn = QtWidgets.QPushButton(parent=self.groupBox_2)
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.label_5.setFont(font)
-        self.label_5.setObjectName("label_5")
-        self.horizontalLayout_2.addWidget(self.label_5)
-        self.reg_btn = QtWidgets.QPushButton(parent=self.groupBox_2)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.reg_btn.setFont(font)
-        self.reg_btn.setObjectName("reg_btn")
-        self.horizontalLayout_2.addWidget(self.reg_btn)
-        self.verticalLayout_4.addLayout(self.horizontalLayout_2)
+        font.setBold(False)
+        font.setUnderline(True)
+        self.signuppage_btn.setFont(font)
+        self.signuppage_btn.setStyleSheet("QPushButton {\n"
+"    background: transparent;\n"
+"    color: rgb(0, 0, 0);\n"
+"    border: none\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"    \n"
+"    color: rgb(0, 85, 255);\n"
+"}")
+        self.signuppage_btn.setObjectName("signuppage_btn")
+        self.verticalLayout_4.addWidget(self.signuppage_btn)
         spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_4.addItem(spacerItem5)
         self.verticalLayout_3.addWidget(self.groupBox_2)
@@ -207,29 +220,32 @@ class Ui_Dialog(object):
         self.verticalLayout_6.addWidget(self.lineEdit_4)
         spacerItem7 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_6.addItem(spacerItem7)
-        self.pushButton_2 = QtWidgets.QPushButton(parent=self.groupBox_3)
+        self.signup_btn = QtWidgets.QPushButton(parent=self.groupBox_3)
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.verticalLayout_6.addWidget(self.pushButton_2)
+        self.signup_btn.setFont(font)
+        self.signup_btn.setObjectName("signup_btn")
+        self.verticalLayout_6.addWidget(self.signup_btn)
         spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_6.addItem(spacerItem8)
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_8 = QtWidgets.QLabel(parent=self.groupBox_3)
+        self.loginpage_btn = QtWidgets.QPushButton(parent=self.groupBox_3)
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.label_8.setFont(font)
-        self.label_8.setObjectName("label_8")
-        self.horizontalLayout_3.addWidget(self.label_8)
-        self.pushButton = QtWidgets.QPushButton(parent=self.groupBox_3)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout_3.addWidget(self.pushButton)
-        self.verticalLayout_6.addLayout(self.horizontalLayout_3)
+        font.setItalic(False)
+        font.setUnderline(True)
+        self.loginpage_btn.setFont(font)
+        self.loginpage_btn.setStyleSheet("QPushButton {\n"
+"    background: transparent;\n"
+"    color: rgb(0, 0, 0);\n"
+"    border: none\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"    \n"
+"    color: rgb(0, 85, 255);\n"
+"}")
+        self.loginpage_btn.setObjectName("loginpage_btn")
+        self.verticalLayout_6.addWidget(self.loginpage_btn)
         spacerItem9 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_6.addItem(spacerItem9)
         self.verticalLayout_5.addWidget(self.groupBox_3)
@@ -246,15 +262,17 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "<html><head/><body><p>StayBook</p></body></html>"))
         self.label_9.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt;\">Hotel Management System</span></p></body></html>"))
         self.label_3.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-size:11pt;\">Username</span></p></body></html>"))
+        self.lineEdit.setPlaceholderText(_translate("Dialog", "Enter your username"))
         self.label_4.setText(_translate("Dialog", "Password"))
+        self.lineEdit_2.setPlaceholderText(_translate("Dialog", "Enter your password"))
         self.login_btn.setText(_translate("Dialog", "Log In"))
-        self.label_5.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:11pt;\">No account yet?</span></p></body></html>"))
-        self.reg_btn.setText(_translate("Dialog", "Sign Up"))
+        self.signuppage_btn.setText(_translate("Dialog", "No account yet? Sign Up"))
         self.label_6.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-size:11pt;\">Username</span></p></body></html>"))
+        self.lineEdit_3.setPlaceholderText(_translate("Dialog", "Enter your username"))
         self.label_7.setText(_translate("Dialog", "Password"))
-        self.pushButton_2.setText(_translate("Dialog", "Sign Up"))
-        self.label_8.setText(_translate("Dialog", "<html><head/><body><p align=\"center\">Already have an account?</p></body></html>"))
-        self.pushButton.setText(_translate("Dialog", "Log In"))
+        self.lineEdit_4.setPlaceholderText(_translate("Dialog", "Enter your password"))
+        self.signup_btn.setText(_translate("Dialog", "Sign Up"))
+        self.loginpage_btn.setText(_translate("Dialog", "Already have an account? Log In"))
 
 
 if __name__ == "__main__":
