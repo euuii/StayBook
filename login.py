@@ -83,7 +83,7 @@ class LoginDialog(QDialog):
             return
 
         if validate_credentials(username, password):
-            self.accept()
+            self.accept() # Amo jang syntax ya ginahulat ka staybook.py para mag diretso sa main window
             return
 
         QMessageBox.warning(

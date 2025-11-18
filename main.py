@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QMainWindow
-from main_window import Ui_MainWindow
+from PyQt6.QtWidgets import QMainWindow, QMessageBox
+from main_window import Ui_MainWindow # halin sa main_window.py, mabuol kita ka class nga Ui_MainWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -50,10 +50,18 @@ class MainWindow(QMainWindow):
         # Default page
         self.showDashboard()
 
-        self.ui.logout_btn.clicked.connect(self.close)
+        # Logout button function
+        self.ui.logout_btn.clicked.connect(self.handle_logout)
+
+    # ma call jang method kung tum okon ya logout button
+    def handle_logout(self):
+        logout = QMessageBox.question(self, "Confirm Logout", "Are you sure you want to logout?",
+        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) #Buttons
+        if logout == QMessageBox.StandardButton.Yes:
+            self.close()
 
     def resetButtonStyles(self):
-        """Reset all button styles to default"""
+        # Reset all button styles to default
         for btn in self.nav_buttons:
             btn.setStyleSheet(self.default_style)
 
