@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
 from main_window import Ui_MainWindow # halin sa main_window.py, mabuol kita ka class nga Ui_MainWindow
+from login import LoginDialog
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -50,15 +51,19 @@ class MainWindow(QMainWindow):
         # Default page
         self.showDashboard()
 
-        # Logout button function
-        self.ui.logout_btn.clicked.connect(self.handle_logout)
+        # Logout button function, ma trigger and closeEvent nga method kung tum okon ja
+        self.ui.logout_btn.clicked.connect(self.close)
 
-    # ma call jang method kung tum okon ya logout button
-    def handle_logout(self):
-        logout = QMessageBox.question(self, "Confirm Logout", "Are you sure you want to logout?",
-        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) #Buttons
-        if logout == QMessageBox.StandardButton.Yes:
-            self.close()
+    # Jang method nga ja is halin dun nga daan sa pyqt6, gagana ja kung i close mo mato mato ya window
+    def closeEvent(self, event):
+        result = QMessageBox.question(self, "Confirm logout", "Are you sure you want to log out?",
+        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)  # Buttons
+        if result == QMessageBox.StandardButton.Yes:
+            event.accept()
+            return
+        else:
+            event.ignore()
+            return
 
     def resetButtonStyles(self):
         # Reset all button styles to default
