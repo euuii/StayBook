@@ -1,3 +1,4 @@
+from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
 from main_window import Ui_MainWindow # halin sa main_window.py, mabuol kita ka class nga Ui_MainWindow
 from login import LoginDialog
@@ -50,6 +51,19 @@ class MainWindow(QMainWindow):
 
         # Default page
         self.showDashboard()
+
+        # logo ka system
+        logo = QPixmap("icons/hotel64.png")
+        self.ui.logo.setPixmap(logo)
+
+        # add room icon
+        add_icon = QIcon("icons/add32.png")
+        self.ui.addroom_btn.setIcon(add_icon)
+        self.ui.addreserve_btn.setIcon(add_icon)
+
+        # logout icon
+        logout_icon = QIcon("icons/logout32white.png")
+        self.ui.logout_btn.setIcon(logout_icon)
 
         # Logout button function, ma trigger and closeEvent nga method kung tum okon ja
         self.ui.logout_btn.clicked.connect(self.close)

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>862</width>
+    <width>832</width>
     <height>699</height>
    </rect>
   </property>
@@ -55,13 +55,13 @@ color: rgb(255, 255, 255);
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 10px;
-padding: 25px</string>
+padding: 10px</string>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>../57456f52/resort (3).png</pixmap>
+            <pixmap>../a1b7989f/hotel64.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -104,6 +104,11 @@ padding: 25px</string>
            </item>
            <item row="1" column="1" alignment="Qt::AlignmentFlag::AlignLeft">
             <widget class="QFrame" name="greet_2">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">QFrame{
 	background: transparent	
@@ -164,7 +169,7 @@ padding: 25px</string>
               <string notr="true">background: transparent</string>
              </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;STAYBOOK&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;STAYBOOK&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
@@ -360,7 +365,7 @@ QGroupBox{
             </attribute>
             <column>
              <property name="text">
-              <string>Room Number</string>
+              <string>Room_Number</string>
              </property>
             </column>
             <column>
@@ -370,7 +375,7 @@ QGroupBox{
             </column>
             <column>
              <property name="text">
-              <string>Guest Name</string>
+              <string>Guest_Name</string>
              </property>
             </column>
             <column>
@@ -456,7 +461,7 @@ QGroupBox{
             </attribute>
             <column>
              <property name="text">
-              <string>Room Number</string>
+              <string>Room_Number</string>
              </property>
             </column>
             <column>
@@ -466,7 +471,7 @@ QGroupBox{
             </column>
             <column>
              <property name="text">
-              <string>New Column</string>
+              <string>Price_Rate</string>
              </property>
             </column>
             <column>
@@ -482,6 +487,11 @@ QGroupBox{
             <column>
              <property name="text">
               <string>Description</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Action</string>
              </property>
             </column>
            </widget>
@@ -544,18 +554,29 @@ QGroupBox{
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="addroom">
+             <widget class="QPushButton" name="addroom_btn">
               <property name="font">
                <font>
-                <pointsize>11</pointsize>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 0, 0);
-color: rgb(255, 255, 255);</string>
+               <string notr="true">QPushButton{
+	background-color: rgb(0, 0, 0);
+	color: rgb(255, 255, 255);
+}
+
+QPushButton::hover{
+	background-color: rgb(70, 70, 70);
+}</string>
               </property>
               <property name="text">
-               <string>Add Room</string>
+               <string> Add Room</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normalon>../c249255d/add32.png</normalon>
+               </iconset>
               </property>
              </widget>
             </item>
@@ -627,18 +648,29 @@ color: rgb(255, 255, 255);</string>
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="addreserve">
+             <widget class="QPushButton" name="addreserve_btn">
               <property name="font">
                <font>
                 <pointsize>11</pointsize>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 0, 0);
-color: rgb(255, 255, 255);</string>
+               <string notr="true">QPushButton{
+	background-color: rgb(0, 0, 0);
+	color: rgb(255, 255, 255);
+}
+
+QPushButton::hover{
+	background-color: rgb(70, 70, 70);
+}</string>
               </property>
               <property name="text">
-               <string>Add Reservation</string>
+               <string> Add Reservation</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normalon>../c249255d/add32.png</normalon>
+               </iconset>
               </property>
              </widget>
             </item>
@@ -654,7 +686,7 @@ color: rgb(255, 255, 255);</string>
             </attribute>
             <column>
              <property name="text">
-              <string>Guest Name</string>
+              <string>Guest_Name</string>
              </property>
             </column>
             <column>
@@ -664,7 +696,7 @@ color: rgb(255, 255, 255);</string>
             </column>
             <column>
              <property name="text">
-              <string>Room Number</string>
+              <string>Room_Number</string>
              </property>
             </column>
             <column>
@@ -680,6 +712,11 @@ color: rgb(255, 255, 255);</string>
             <column>
              <property name="text">
               <string>Payment</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Action</string>
              </property>
             </column>
            </widget>

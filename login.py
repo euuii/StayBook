@@ -1,5 +1,7 @@
 import sqlite3
 from pathlib import Path
+
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QDialog, QMessageBox
 from login_dialog import Ui_Dialog
 
@@ -65,6 +67,10 @@ class LoginDialog(QDialog):
         # Handle primary actions
         self.ui.login_btn.clicked.connect(self.handle_login)
         self.ui.signup_btn.clicked.connect(self.handle_signup)
+
+        # logo ka system
+        logo = QPixmap("icons/hotel64.png")
+        self.ui.logo.setPixmap(logo)
 
     def show_signup_page(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.signup_page)
