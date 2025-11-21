@@ -59,6 +59,10 @@ class LoginDialog(QDialog):
 
         self.db = AccountDatabase() #Object of the AccountDatabase class
 
+        self.login_successful = False
+
+        self.show_login_page() #Default page
+
         # Switch between Login and Sign-up pages (stacked widget)
         self.ui.signuppage_btn.clicked.connect(self.show_signup_page)
         self.ui.loginpage_btn.clicked.connect(self.show_login_page)
@@ -88,7 +92,8 @@ class LoginDialog(QDialog):
         else:
             success, message = self.db.validate_account(username, password)
             if success:
-                self.accept() # Amo jang syntax ya ginahulat ka staybook.py para mag diretso sa main window
+                self.login_successful = True # Amo jang syntax ya ginahulat ka staybook.py para mag diretso sa main window
+                self.close()
             else:
                 QMessageBox.warning(self, "Login Failed", message)
         return
