@@ -215,6 +215,7 @@ class Ui_Dialog(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         self.lineEdit_4.setFont(font)
+        self.lineEdit_4.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         self.lineEdit_4.setObjectName("lineEdit_4")
         self.verticalLayout_6.addWidget(self.lineEdit_4)
         spacerItem7 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
@@ -253,7 +254,7 @@ class Ui_Dialog(object):
         self.verticalLayout_7.addWidget(self.verticalFrame)
 
         self.retranslateUi(Dialog)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):

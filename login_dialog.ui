@@ -172,7 +172,7 @@ border-radius: 30px;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="login_page">
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -438,6 +438,9 @@ QPushButton{
                 <font>
                  <pointsize>11</pointsize>
                 </font>
+               </property>
+               <property name="echoMode">
+                <enum>QLineEdit::EchoMode::Password</enum>
                </property>
                <property name="placeholderText">
                 <string>Enter your password</string>

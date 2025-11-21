@@ -1,7 +1,6 @@
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
 from main_window import Ui_MainWindow # halin sa main_window.py, mabuol kita ka class nga Ui_MainWindow
-from login import LoginDialog
 
 class MainWindow(QMainWindow):
     def __init__(self):
