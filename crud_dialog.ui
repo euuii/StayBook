@@ -40,7 +40,7 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="roomedit_page">
       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -185,11 +185,6 @@ border: None;
                  <item>
                   <property name="text">
                    <string>Available</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Occupied</string>
                   </property>
                  </item>
                  <item>
@@ -491,11 +486,6 @@ border: None;
                  <item>
                   <property name="text">
                    <string>Available</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Occupied</string>
                   </property>
                  </item>
                  <item>

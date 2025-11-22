@@ -1,5 +1,6 @@
 import sqlite3
 from PyQt6.QtWidgets import QDialog, QMessageBox
+from PyQt6.QtCore import QDate
 from crud_dialog import Ui_Dialog
 
 
@@ -222,9 +223,35 @@ class CrudDialog(QDialog):
         self.ui.cancel_btn_3.clicked.connect(self.close)
         self.ui.cancel_btn_4.clicked.connect(self.close)
 
-        # If we are adding a reservation, load available rooms
-        if dialog_type == "reservation" and not edit_mode:
-            self.load_available_rooms()
+        # If this is a reservation dialog, make the date pickers easier to use
+        if dialog_type == "reservation":
+            # Get today's date
+            today = QDate.currentDate()
+            tomorrow = today.addDays(1)
+            
+            # Setup check-in date (for adding new reservation)
+            self.ui.checkindate_add.setCalendarPopup(True)  # Show calendar when clicked
+            self.ui.checkindate_add.setDate(today)  # Start with today
+            self.ui.checkindate_add.setMinimumDate(today)  # Can't pick past dates
+            self.ui.checkindate_add.setDisplayFormat("MMM dd, yyyy")  # Show "Jan 15, 2024"
+            
+            # Setup check-out date (for adding new reservation)
+            self.ui.checkoutdate_add.setCalendarPopup(True)  # Show calendar when clicked
+            self.ui.checkoutdate_add.setDate(tomorrow)  # Start with tomorrow
+            self.ui.checkoutdate_add.setMinimumDate(today)  # Can't pick past dates
+            self.ui.checkoutdate_add.setDisplayFormat("MMM dd, yyyy")  # Show "Jan 15, 2024"
+            
+            # Setup check-in date (for editing reservation)
+            self.ui.checkindate_edit.setCalendarPopup(True)  # Show calendar when clicked
+            self.ui.checkindate_edit.setDisplayFormat("MMM dd, yyyy")  # Show "Jan 15, 2024"
+            
+            # Setup check-out date (for editing reservation)
+            self.ui.checkoutdate_edit.setCalendarPopup(True)  # Show calendar when clicked
+            self.ui.checkoutdate_edit.setDisplayFormat("MMM dd, yyyy")  # Show "Jan 15, 2024"
+            
+            # If adding a new reservation, load available rooms
+            if not edit_mode:
+                self.load_available_rooms()
 
         # If we are in edit mode for room, fill the form with room data
         if self.edit_mode and room_data and dialog_type == "room":
@@ -252,8 +279,7 @@ class CrudDialog(QDialog):
         self.load_rooms_for_edit()
         self.ui.roomnum_edit.setCurrentText(str(self.reservation_data['room_number']))
 
-        # Set dates
-        from PyQt6.QtCore import QDate
+        # Set dates (dates are already configured in setup_date_widgets)
         checkin = QDate.fromString(self.reservation_data['checkin_date'], "yyyy-MM-dd")
         checkout = QDate.fromString(self.reservation_data['checkout_date'], "yyyy-MM-dd")
         self.ui.checkindate_edit.setDate(checkin)
