@@ -1,7 +1,8 @@
 from PyQt6.QtGui import QPixmap, QIcon
-from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
-from main_window import Ui_MainWindow # halin sa main_window.py, mabuol kita ka class nga Ui_MainWindow
+from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QPushButton, QWidget, QHBoxLayout
+from main_window import Ui_MainWindow
 from crud import CrudDialog, HotelDatabase
+
 
 class MainWindow(QMainWindow):
     def __init__(self, username):
@@ -11,7 +12,7 @@ class MainWindow(QMainWindow):
 
         self.username = username
         self.ui.username.setText(username.title())
-        self.db = HotelDatabase(username)
+        self.db = HotelDatabase(username)  # Connect to database
 
         # Keep track of nav buttons
         self.nav_buttons = [
@@ -53,7 +54,7 @@ class MainWindow(QMainWindow):
         self.ui.room_btn.clicked.connect(self.showRooms)
         self.ui.reserve_btn.clicked.connect(self.showReserve)
 
-        # Connect add room button to open crud dialog
+        # Connect add room button
         self.ui.addroom_btn.clicked.connect(self.showAddRoomDialog)
 
         # Default page
@@ -78,22 +79,16 @@ class MainWindow(QMainWindow):
         logout_icon = QIcon("icons/logout32white.png")
         self.ui.logout_btn.setIcon(logout_icon)
 
-        # Logout button function, ma trigger and closeEvent nga method kung tum okon ja
+        # Logout button function
         self.ui.logout_btn.clicked.connect(self.close)
 
-        # Automatically load data into the table when the window opens
-        self.display_rooms()
-
-    # Jang method nga ja is halin dun nga daan sa pyqt6, gagana ja kung i close mo mato mato ya window
     def closeEvent(self, event):
         result = QMessageBox.question(self, "Confirm logout", "Are you sure you want to log out?",
-        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)  # Buttons
+                                      QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if result == QMessageBox.StandardButton.Yes:
             event.accept()
-            return
         else:
             event.ignore()
-            return
 
     def resetButtonStyles(self):
         # Reset all button styles to default
@@ -109,6 +104,7 @@ class MainWindow(QMainWindow):
         self.ui.stackedWidget.setCurrentWidget(self.ui.Rooms)
         self.resetButtonStyles()
         self.ui.room_btn.setStyleSheet(self.active_style)
+        self.display_rooms()  # Show rooms when we click the Room button
 
     def showReserve(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.Reserve)
@@ -143,13 +139,65 @@ class MainWindow(QMainWindow):
             self.ui.tableWidget1.setItem(row, 4, QTableWidgetItem(capacity))
             self.ui.tableWidget1.setItem(row, 5, QTableWidgetItem(description))
 
-    def showAddRoomDialog(self):
-        # Update this line to pass 'parent_window=self'
-        crudDialog = CrudDialog(self.username, parent_window=self)
-        crudDialog.ui.stackedWidget.setCurrentWidget(crudDialog.ui.roomadd_page) #Show roomadd_page of CrudDialog
-        crudDialog.exec() # Show dialog
+            # Create Edit and Delete buttons for the Action column
+            action_widget = QWidget()
+            action_layout = QHBoxLayout()
+            action_layout.setContentsMargins(0, 0, 0, 0)  # Remove extra space
 
-    def showUpdateRoomDialog(self):
-        crudDialog = CrudDialog(self.username, parent_window=self)
-        crudDialog.ui.stackedWidget.setCurrentWidget(crudDialog.ui.roomedit_page)
+            # Create Edit button
+            edit_btn = QPushButton("Edit")
+            edit_btn.setMaximumWidth(60)
+            edit_btn.clicked.connect(lambda checked, r=row: self.edit_room(r))
+
+            # Create Delete button
+            delete_btn = QPushButton("Delete")
+            delete_btn.setMaximumWidth(60)
+            delete_btn.clicked.connect(lambda checked, r=row: self.delete_room(r))
+
+            # Add buttons to the layout
+            action_layout.addWidget(edit_btn)
+            action_layout.addWidget(delete_btn)
+            action_widget.setLayout(action_layout)
+
+            # Put the buttons into the Action column (column 6)
+            self.ui.tableWidget1.setCellWidget(row, 6, action_widget)
+
+    def edit_room(self, row):
+        # Get the room number from the first column of the row
+        room_number = self.ui.tableWidget1.item(row, 0).text()
+
+        # Get the room data from database
+        room = self.db.get_room_by_number(room_number)
+
+        if room:
+            # Open the crud dialog in edit mode
+            crudDialog = CrudDialog(self.username, parent=self, edit_mode=True, room_data=room)
+            crudDialog.ui.stackedWidget.setCurrentWidget(crudDialog.ui.roomedit_page)
+            crudDialog.exec()
+        else:
+            QMessageBox.warning(self, "Error", "Could not find room data")
+
+    def delete_room(self, row):
+        # Get the room number from the first column of the row
+        room_number = self.ui.tableWidget1.item(row, 0).text()
+
+        # Ask for confirmation
+        result = QMessageBox.question(self, "Delete Room",
+                                      f"Are you sure you want to delete room {room_number}?",
+                                      QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+
+        if result == QMessageBox.StandardButton.Yes:
+            # Delete the room from database
+            success, message = self.db.delete_room(room_number)
+
+            if success:
+                QMessageBox.information(self, "Success", message)
+                self.display_rooms()  # Refresh the table
+            else:
+                QMessageBox.warning(self, "Error", message)
+
+    def showAddRoomDialog(self):
+        # Pass the main window as parent so crud dialog can refresh the table
+        crudDialog = CrudDialog(self.username, parent=self)
+        crudDialog.ui.stackedWidget.setCurrentWidget(crudDialog.ui.roomadd_page)
         crudDialog.exec()
