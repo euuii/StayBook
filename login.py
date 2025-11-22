@@ -45,7 +45,7 @@ class AccountDatabase:
             self.conn.commit() # Commits the changes to the database
             return True, "Account created successfully"
         except sqlite3.IntegrityError:
-            return False, "Username already exists"
+            return False, "Username unavailable"
         except sqlite3.Error as e:
             self.conn.rollback() # Rollback changes if there is an error
             return False, f"Error adding account: {e}"
@@ -60,6 +60,7 @@ class LoginDialog(QDialog):
         self.db = AccountDatabase() #Object of the AccountDatabase class
 
         self.login_successful = False
+        self.logged_in_username = None
 
         self.show_login_page() #Default page
 
@@ -93,6 +94,7 @@ class LoginDialog(QDialog):
             success, message = self.db.validate_account(username, password)
             if success:
                 self.login_successful = True # Amo jang syntax ya ginahulat ka staybook.py para mag diretso sa main window
+                self.logged_in_username = username
                 self.close()
             else:
                 QMessageBox.warning(self, "Login Failed", message)
@@ -106,6 +108,9 @@ class LoginDialog(QDialog):
             QMessageBox.warning(
                 self, "Missing Information", "Please enter both username and password."
             )
+        elif username == "accounts":    #The name of each database is based on the username
+                                        #accounts.db is reserved for the login database
+            QMessageBox.warning(self, "Sign Up Failed", "Username unavailable")
         else:
             success, message = self.db.add_account(username, password)
             if success:
