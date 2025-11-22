@@ -2,11 +2,12 @@ import sqlite3
 from PyQt6.QtWidgets import QDialog, QMessageBox
 from crud_dialog import Ui_Dialog
 
+
 class HotelDatabase:
     def __init__(self, username):
         # Initialize the database
-        self.conn = None # Connection to the database
-        self.cursor = None # Cursor to execute commands
+        self.conn = None  # Connection to the database
+        self.cursor = None  # Cursor to execute commands
         self.username = f"{username}.db"
         self.connect_db()
 
@@ -21,12 +22,25 @@ class HotelDatabase:
                 CREATE TABLE IF NOT EXISTS rooms(
                     room_number INTEGER PRIMARY KEY AUTOINCREMENT,
                     type TEXT,
-                    price_rate REAL,
+                    price_rate REAL,  
                     status TEXT DEFAULT 'Available',
                     capacity INTEGER,
                     description TEXT
-                )
-            """)
+                                )
+                """)
+
+            # Create reservations table
+            self.cursor.execute("""
+                CREATE TABLE IF NOT EXISTS reservations(
+                    guest_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    guest_name TEXT NOT NULL,
+                    contact TEXT,   
+                    room_number INTEGER,
+                    checkin_date TEXT,
+                    checkout_date TEXT,
+                    payment_status TEXT
+                                )
+                """)
             self.conn.commit()
         except sqlite3.Error as e:
             print(f"Database connection error: {e}")
@@ -39,6 +53,16 @@ class HotelDatabase:
             return self.cursor.fetchall()
         except sqlite3.Error as e:
             print(f"Error fetching rooms: {e}")
+            return []
+
+    def get_available_rooms(self):
+        # Get only available rooms
+        try:
+            sql = "SELECT * FROM rooms WHERE status = 'Available'"
+            self.cursor.execute(sql)
+            return self.cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"Error fetching available rooms: {e}")
             return []
 
     def get_room_by_number(self, room_number):
@@ -73,6 +97,17 @@ class HotelDatabase:
             self.conn.rollback()
             return False, f"Error updating room: {e}"
 
+    def update_room_status(self, room_number, status):
+        # Update only the status of a room
+        try:
+            sql = "UPDATE rooms SET status = ? WHERE room_number = ?"
+            self.cursor.execute(sql, (status, room_number))
+            self.conn.commit()
+            return True
+        except sqlite3.Error as e:
+            self.conn.rollback()
+            return False
+
     def delete_room(self, room_number):
         # Delete a room from database
         try:
@@ -84,9 +119,86 @@ class HotelDatabase:
             self.conn.rollback()
             return False, f"Error deleting room: {e}"
 
+    def get_all_reservations(self):
+        # Get all reservations from database
+        try:
+            sql = "SELECT * FROM reservations"
+            self.cursor.execute(sql)
+            return self.cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"Error fetching reservations: {e}")
+            return []
+
+    def get_reservation_by_id(self, guest_id):
+        # Get a specific reservation by guest ID
+        try:
+            sql = "SELECT * FROM reservations WHERE guest_id = ?"
+            self.cursor.execute(sql, (guest_id,))
+            return self.cursor.fetchone()
+        except sqlite3.Error as e:
+            print(f"Error fetching reservation: {e}")
+            return None
+
+    def add_reservation(self, guest_name, contact, room_number, checkin_date, checkout_date, payment_status):
+        # Add a new reservation to database
+        try:
+            sql = "INSERT INTO reservations (guest_name, contact, room_number, checkin_date, checkout_date, payment_status) VALUES (?, ?, ?, ?, ?, ?)"
+            self.cursor.execute(sql, (guest_name, contact, room_number, checkin_date, checkout_date, payment_status))
+            self.conn.commit()
+
+            # Update room status to Occupied
+            self.update_room_status(room_number, "Occupied")
+
+            return True, "Reservation added successfully"
+        except sqlite3.Error as e:
+            self.conn.rollback()
+            return False, f"Error adding reservation: {e}"
+
+    def update_reservation(self, guest_id, guest_name, contact, room_number, checkin_date, checkout_date,
+                           payment_status, old_room_number):
+        # Update an existing reservation in database
+        try:
+            sql = "UPDATE reservations SET guest_name = ?, contact = ?, room_number = ?, checkin_date = ?, checkout_date = ?, payment_status = ? WHERE guest_id = ?"
+            self.cursor.execute(sql, (guest_name, contact, room_number, checkin_date, checkout_date, payment_status,
+                                      guest_id))
+            self.conn.commit()
+
+            # If room number changed, update the old room to Available and new room to Occupied
+            if old_room_number != room_number:
+                self.update_room_status(old_room_number, "Available")
+                self.update_room_status(room_number, "Occupied")
+
+            return True, "Reservation updated successfully"
+        except sqlite3.Error as e:
+            self.conn.rollback()
+            return False, f"Error updating reservation: {e}"
+
+    def delete_reservation(self, guest_id):
+        # Delete a reservation from database
+        try:
+            # First get the room number so we can update its status
+            reservation = self.get_reservation_by_id(guest_id)
+            if reservation:
+                room_number = reservation['room_number']
+
+                sql = "DELETE FROM reservations WHERE guest_id = ?"
+                self.cursor.execute(sql, (guest_id,))
+                self.conn.commit()
+
+                # Update room status back to Available
+                self.update_room_status(room_number, "Available")
+
+                return True, "Reservation deleted successfully"
+            else:
+                return False, "Reservation not found"
+        except sqlite3.Error as e:
+            self.conn.rollback()
+            return False, f"Error deleting reservation: {e}"
+
 
 class CrudDialog(QDialog):
-    def __init__(self, username, parent=None, edit_mode=False, room_data=None):
+    def __init__(self, username, parent=None, edit_mode=False, room_data=None, reservation_data=None,
+                 dialog_type="room"):
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
@@ -95,25 +207,76 @@ class CrudDialog(QDialog):
         self.parent_window = parent
         self.edit_mode = edit_mode
         self.room_data = room_data
+        self.reservation_data = reservation_data
+        self.dialog_type = dialog_type  # "room" or "reservation"
 
-        # Connect add room button
+        # Connect room buttons
         self.ui.addroom_btn.clicked.connect(self.add_room)
-
-        # Connect update room button
         self.ui.updateroom_btn.clicked.connect(self.update_room)
 
-        # If we are in edit mode, fill the form with room data
-        if self.edit_mode and room_data:
-            self.fill_edit_form()
+        # Connect reservation buttons
+        self.ui.addreserve_btn.clicked.connect(self.add_reservation)
+        self.ui.addreserve_btn_2.clicked.connect(self.update_reservation)
 
-    def fill_edit_form(self):
+        # Connect cancel buttons
+        self.ui.cancel_btn_3.clicked.connect(self.close)
+        self.ui.cancel_btn_4.clicked.connect(self.close)
+
+        # If we are adding a reservation, load available rooms
+        if dialog_type == "reservation" and not edit_mode:
+            self.load_available_rooms()
+
+        # If we are in edit mode for room, fill the form with room data
+        if self.edit_mode and room_data and dialog_type == "room":
+            self.fill_room_edit_form()
+
+        # If we are in edit mode for reservation, fill the form with reservation data
+        if self.edit_mode and reservation_data and dialog_type == "reservation":
+            self.fill_reservation_edit_form()
+
+    def fill_room_edit_form(self):
         # Fill the edit form with existing room data
-        # Note: We don't set room number because it shouldn't be edited (it's the primary key)
         self.ui.roomtype_edit.setCurrentText(self.room_data['type'])
         self.ui.price_edit.setText(str(self.room_data['price_rate']))
         self.ui.status_edit.setCurrentText(self.room_data['status'])
         self.ui.capacity_edit.setText(str(self.room_data['capacity']))
         self.ui.description_edit.setText(self.room_data['description'])
+
+    def fill_reservation_edit_form(self):
+        # Fill the edit form with existing reservation data
+        self.ui.name_edit.setText(self.reservation_data['guest_name'])
+        self.ui.contact_edit.setText(self.reservation_data['contact'])
+        self.ui.payment_edit.setCurrentText(self.reservation_data['payment_status'])
+
+        # Load available rooms plus the current room for editing
+        self.load_rooms_for_edit()
+        self.ui.roomnum_edit.setCurrentText(str(self.reservation_data['room_number']))
+
+        # Set dates
+        from PyQt6.QtCore import QDate
+        checkin = QDate.fromString(self.reservation_data['checkin_date'], "yyyy-MM-dd")
+        checkout = QDate.fromString(self.reservation_data['checkout_date'], "yyyy-MM-dd")
+        self.ui.checkindate_edit.setDate(checkin)
+        self.ui.checkoutdate_edit.setDate(checkout)
+
+    def load_available_rooms(self):
+        # Load only available rooms into the combo box
+        available_rooms = self.db.get_available_rooms()
+        self.ui.roomnum_add.clear()
+        for room in available_rooms:
+            self.ui.roomnum_add.addItem(str(room['room_number']))
+
+    def load_rooms_for_edit(self):
+        # Load available rooms plus the current occupied room for editing
+        available_rooms = self.db.get_available_rooms()
+        self.ui.roomnum_edit.clear()
+
+        # Add the currently occupied room first
+        self.ui.roomnum_edit.addItem(str(self.reservation_data['room_number']))
+
+        # Then add all available rooms
+        for room in available_rooms:
+            self.ui.roomnum_edit.addItem(str(room['room_number']))
 
     def add_room(self):
         # Get values from input fields
@@ -150,9 +313,8 @@ class CrudDialog(QDialog):
 
     def update_room(self):
         # Get values from input fields
-        # Use the room number from the data we already have (it shouldn't change anyway)
         room_number = self.room_data['room_number']
-        
+
         room_type = self.ui.roomtype_edit.currentText()
         price_rate = self.ui.price_edit.text().strip()
         status = self.ui.status_edit.currentText()
@@ -180,6 +342,65 @@ class CrudDialog(QDialog):
             # Refresh the table in parent window (main window)
             if self.parent_window:
                 self.parent_window.display_rooms()
+            self.close()
+        else:
+            QMessageBox.warning(self, "Error", message)
+
+    def add_reservation(self):
+        # Get values from input fields
+        guest_name = self.ui.name_add.text().strip()
+        contact = self.ui.contact_add.text().strip()
+        room_number = self.ui.roomnum_add.currentText()
+        payment_status = self.ui.payment_add.currentText()
+        checkin_date = self.ui.checkindate_add.date().toString("yyyy-MM-dd")
+        checkout_date = self.ui.checkoutdate_add.date().toString("yyyy-MM-dd")
+
+        # Check if fields are empty
+        if not guest_name or not contact or not room_number:
+            QMessageBox.warning(self, "Invalid Input", "Please fill in all fields")
+            return
+
+        # Add reservation to database
+        success, message = self.db.add_reservation(guest_name, contact, room_number, checkin_date, checkout_date,
+                                                   payment_status)
+
+        if success:
+            QMessageBox.information(self, "Success", message)
+            # Refresh the tables in parent window
+            if self.parent_window:
+                self.parent_window.display_reservations()
+                self.parent_window.display_rooms()  # Refresh rooms to show updated status
+            self.close()
+        else:
+            QMessageBox.warning(self, "Error", message)
+
+    def update_reservation(self):
+        # Get values from input fields
+        guest_id = self.reservation_data['guest_id']
+        old_room_number = self.reservation_data['room_number']
+
+        guest_name = self.ui.name_edit.text().strip()
+        contact = self.ui.contact_edit.text().strip()
+        room_number = self.ui.roomnum_edit.currentText()
+        payment_status = self.ui.payment_edit.currentText()
+        checkin_date = self.ui.checkindate_edit.date().toString("yyyy-MM-dd")
+        checkout_date = self.ui.checkoutdate_edit.date().toString("yyyy-MM-dd")
+
+        # Check if fields are empty
+        if not guest_name or not contact or not room_number:
+            QMessageBox.warning(self, "Invalid Input", "Please fill in all fields")
+            return
+
+        # Update reservation in database
+        success, message = self.db.update_reservation(guest_id, guest_name, contact, room_number, checkin_date,
+                                                      checkout_date, payment_status, old_room_number)
+
+        if success:
+            QMessageBox.information(self, "Success", message)
+            # Refresh the tables in parent window
+            if self.parent_window:
+                self.parent_window.display_reservations()
+                self.parent_window.display_rooms()  # Refresh rooms to show updated status
             self.close()
         else:
             QMessageBox.warning(self, "Error", message)
