@@ -177,7 +177,9 @@ class MainWindow(QMainWindow):
             action_layout.setContentsMargins(0, 0, 0, 0)  # Remove extra space
 
             # Create Edit button
-            edit_btn = QPushButton("Edit")
+            edit_btn = QPushButton()
+            edit_icon = QIcon("icons/edit16.png")
+            edit_btn.setIcon(edit_icon)
             edit_btn.setMaximumWidth(60)
             edit_btn.clicked.connect(lambda checked, rn=room_number: self.edit_room_by_number(rn))
 
@@ -260,7 +262,9 @@ class MainWindow(QMainWindow):
             action_layout.setContentsMargins(0, 0, 0, 0)  # Remove extra space
 
             # Create Edit button
-            edit_btn = QPushButton("Edit")
+            edit_btn = QPushButton()
+            edit_icon = QIcon("icons/edit16.png")
+            edit_btn.setIcon(edit_icon)
             edit_btn.setMaximumWidth(60)
             edit_btn.clicked.connect(lambda checked, gid=guest_id: self.edit_reservation_by_id(gid))
 
