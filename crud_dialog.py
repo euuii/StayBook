@@ -12,14 +12,14 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(800, 380)
+        Dialog.resize(800, 400)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Dialog.sizePolicy().hasHeightForWidth())
         Dialog.setSizePolicy(sizePolicy)
-        Dialog.setMinimumSize(QtCore.QSize(800, 380))
-        Dialog.setMaximumSize(QtCore.QSize(800, 380))
+        Dialog.setMinimumSize(QtCore.QSize(800, 400))
+        Dialog.setMaximumSize(QtCore.QSize(800, 400))
         self.verticalLayout_17 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_17.setObjectName("verticalLayout_17")
         self.stackedWidget = QtWidgets.QStackedWidget(parent=Dialog)

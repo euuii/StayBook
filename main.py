@@ -184,7 +184,9 @@ class MainWindow(QMainWindow):
             edit_btn.clicked.connect(lambda checked, rn=room_number: self.edit_room_by_number(rn))
 
             # Create Delete button
-            delete_btn = QPushButton("Delete")
+            delete_btn = QPushButton()
+            delete_icon = QIcon("icons/delete16.png")
+            delete_btn.setIcon(delete_icon)
             delete_btn.setMaximumWidth(60)
             delete_btn.clicked.connect(lambda checked, rn=room_number: self.delete_room_by_number(rn))
 
@@ -269,7 +271,9 @@ class MainWindow(QMainWindow):
             edit_btn.clicked.connect(lambda checked, gid=guest_id: self.edit_reservation_by_id(gid))
 
             # Create Delete button
-            delete_btn = QPushButton("Delete")
+            delete_btn = QPushButton()
+            delete_icon = QIcon("icons/delete16.png")
+            delete_btn.setIcon(delete_icon)
             delete_btn.setMaximumWidth(60)
             delete_btn.clicked.connect(lambda checked, gid=guest_id: self.delete_reservation_by_id(gid))
 
