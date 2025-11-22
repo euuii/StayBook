@@ -525,6 +525,8 @@ class Ui_Dialog(object):
         self.stackedWidget.setCurrentIndex(1)
         self.cancel_btn.clicked.connect(Dialog.close) # type: ignore
         self.cancel_btn_2.clicked.connect(Dialog.close) # type: ignore
+        self.cancel_btn_3.clicked.connect(Dialog.close) # type: ignore
+        self.cancel_btn_4.clicked.connect(Dialog.close) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
