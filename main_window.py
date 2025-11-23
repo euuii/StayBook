@@ -19,10 +19,8 @@ class Ui_MainWindow(object):
         MainWindow.setFont(font)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.groupBox = QtWidgets.QGroupBox(parent=self.centralwidget)
         self.groupBox.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.931, y2:0, stop:0.265957 rgba(102, 173, 255, 255), stop:0.547872 rgba(55, 111, 186, 255), stop:1 rgba(16, 36, 62, 255));\n"
 "color: rgb(255, 255, 255);\n"
@@ -110,55 +108,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.addWidget(self.logout_btn)
         spacerItem3 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_7.addItem(spacerItem3)
-        self.verticalLayout_3.addWidget(self.groupBox)
-        self.line = QtWidgets.QFrame(parent=self.centralwidget)
-        self.line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-        self.line.setObjectName("line")
-        self.verticalLayout_3.addWidget(self.line)
-        self.groupBox1 = QtWidgets.QGroupBox(parent=self.centralwidget)
-        self.groupBox1.setStyleSheet("QPushButton{\n"
-"    background-color: rgb(255, 255, 255);\n"
-"    border-radius: 10px;\n"
-"    border: 3px solid rgb(255, 255, 255);\n"
-"    padding: 3px 0px 3px 0px;\n"
-"}\n"
-"\n"
-"QPushButton::hover {\n"
-"    background-color: rgb(230, 230, 230);\n"
-"}\n"
-"\n"
-"QPushButton::pressed{\n"
-"    background-color: rgb(85, 170, 255);\n"
-"    color: rgb(255, 255, 255);\n"
-"}\n"
-"QGroupBox{\n"
-"    border: none\n"
-"}")
-        self.groupBox1.setObjectName("groupBox1")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox1)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.room_btn = QtWidgets.QPushButton(parent=self.groupBox1)
-        font = QtGui.QFont()
-        font.setFamily("Open Sans")
-        font.setPointSize(11)
-        self.room_btn.setFont(font)
-        self.room_btn.setCheckable(False)
-        self.room_btn.setObjectName("room_btn")
-        self.horizontalLayout_3.addWidget(self.room_btn)
-        self.reserve_btn = QtWidgets.QPushButton(parent=self.groupBox1)
-        font = QtGui.QFont()
-        font.setFamily("Open Sans")
-        font.setPointSize(11)
-        self.reserve_btn.setFont(font)
-        self.reserve_btn.setCheckable(False)
-        self.reserve_btn.setObjectName("reserve_btn")
-        self.horizontalLayout_3.addWidget(self.reserve_btn)
-        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
-        self.verticalLayout_3.addWidget(self.groupBox1)
-        self.verticalLayout.addLayout(self.verticalLayout_3)
+        self.verticalLayout_2.addWidget(self.groupBox)
         self.stackedWidget = QtWidgets.QStackedWidget(parent=self.centralwidget)
         self.stackedWidget.setEnabled(True)
         self.stackedWidget.setObjectName("stackedWidget")
@@ -166,6 +116,36 @@ class Ui_MainWindow(object):
         self.Rooms.setObjectName("Rooms")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.Rooms)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.pushButton = QtWidgets.QPushButton(parent=self.Rooms)
+        font = QtGui.QFont()
+        font.setFamily("Open Sans")
+        font.setPointSize(11)
+        self.pushButton.setFont(font)
+        self.pushButton.setStyleSheet("background-color: rgb(0, 85, 255);\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton.setCheckable(False)
+        self.pushButton.setObjectName("pushButton")
+        self.horizontalLayout_4.addWidget(self.pushButton)
+        self.reserve_btn = QtWidgets.QPushButton(parent=self.Rooms)
+        font = QtGui.QFont()
+        font.setFamily("Open Sans")
+        font.setPointSize(11)
+        self.reserve_btn.setFont(font)
+        self.reserve_btn.setStyleSheet("QPushButton::hover{\n"
+"    background-color: rgb(180, 180, 180);\n"
+"}\n"
+"QPushButton::pressed{\n"
+"    background-color: rgb(0, 85, 255);\n"
+"    color: rgb(255, 255, 255);\n"
+"}")
+        self.reserve_btn.setCheckable(False)
+        self.reserve_btn.setObjectName("reserve_btn")
+        self.horizontalLayout_4.addWidget(self.reserve_btn)
+        self.verticalLayout_7.addLayout(self.horizontalLayout_4)
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.gridLayout_3 = QtWidgets.QGridLayout()
         self.gridLayout_3.setObjectName("gridLayout_3")
         spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
@@ -242,12 +222,43 @@ class Ui_MainWindow(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.verticalHeader().setStretchLastSection(False)
         self.gridLayout_3.addWidget(self.tableWidget, 4, 2, 1, 1)
-        self.verticalLayout_7.addLayout(self.gridLayout_3)
+        self.verticalLayout_4.addLayout(self.gridLayout_3)
+        self.verticalLayout_7.addLayout(self.verticalLayout_4)
         self.stackedWidget.addWidget(self.Rooms)
         self.Reserve = QtWidgets.QWidget()
         self.Reserve.setObjectName("Reserve")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.Reserve)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.room_btn = QtWidgets.QPushButton(parent=self.Reserve)
+        font = QtGui.QFont()
+        font.setFamily("Open Sans")
+        font.setPointSize(11)
+        self.room_btn.setFont(font)
+        self.room_btn.setStyleSheet("QPushButton::hover{\n"
+"    background-color: rgb(180, 180, 180);\n"
+"}\n"
+"QPushButton::pressed{\n"
+"    background-color: rgb(0, 85, 255);\n"
+"    color: rgb(255, 255, 255);\n"
+"}")
+        self.room_btn.setCheckable(False)
+        self.room_btn.setObjectName("room_btn")
+        self.horizontalLayout_3.addWidget(self.room_btn)
+        self.pushButton_2 = QtWidgets.QPushButton(parent=self.Reserve)
+        font = QtGui.QFont()
+        font.setFamily("Open Sans")
+        font.setPointSize(11)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setStyleSheet("background-color: rgb(0, 85, 255);\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_2.setCheckable(False)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.horizontalLayout_3.addWidget(self.pushButton_2)
+        self.verticalLayout_6.addLayout(self.horizontalLayout_3)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
         self.gridLayout_2 = QtWidgets.QGridLayout()
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.tableWidget_2 = QtWidgets.QTableWidget(parent=self.Reserve)
@@ -328,13 +339,14 @@ class Ui_MainWindow(object):
         self.searchEdit_reserve.setObjectName("searchEdit_reserve")
         self.searchbar_reserve.addWidget(self.searchEdit_reserve)
         self.gridLayout_2.addLayout(self.searchbar_reserve, 4, 1, 1, 1)
-        self.verticalLayout_6.addLayout(self.gridLayout_2)
+        self.verticalLayout.addLayout(self.gridLayout_2)
+        self.verticalLayout_6.addLayout(self.verticalLayout)
         self.stackedWidget.addWidget(self.Reserve)
-        self.verticalLayout.addWidget(self.stackedWidget)
+        self.verticalLayout_2.addWidget(self.stackedWidget)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -344,7 +356,7 @@ class Ui_MainWindow(object):
         self.welcome.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Welcome,</span></p></body></html>"))
         self.username.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Username</span></p></body></html>"))
         self.logout_btn.setText(_translate("MainWindow", "Log Out"))
-        self.room_btn.setText(_translate("MainWindow", "Room Management"))
+        self.pushButton.setText(_translate("MainWindow", "Room Management"))
         self.reserve_btn.setText(_translate("MainWindow", "Reservation"))
         self.label_5.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:16pt;\">Room Management</span></p><p><span style=\" font-size:11pt;\">Manage hotel rooms and their details</span></p></body></html>"))
         self.addroom_btn.setText(_translate("MainWindow", " Add Room"))
@@ -363,6 +375,8 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Description"))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Action"))
+        self.room_btn.setText(_translate("MainWindow", "Room Management"))
+        self.pushButton_2.setText(_translate("MainWindow", "Reservation"))
         item = self.tableWidget_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Guest_ID"))
         item = self.tableWidget_2.horizontalHeaderItem(1)

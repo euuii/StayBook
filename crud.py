@@ -1,4 +1,5 @@
 import sqlite3
+import os
 from PyQt6.QtWidgets import QDialog, QMessageBox
 from PyQt6.QtCore import QDate
 from crud_dialog import Ui_Dialog
@@ -14,7 +15,11 @@ class HotelDatabase:
 
     def connect_db(self):
         try:
-            self.conn = sqlite3.connect(self.username)  # Connect to the database based on username
+
+            if not os.path.exists("user_database"): #Checks if user_database folder exists
+                os.makedirs("user_database") # Creates user_database folder if not exist
+
+            self.conn = sqlite3.connect(f"user_database/{self.username}")  # Connect to the database based on username
             self.conn.row_factory = sqlite3.Row  # Access results by column name instead of index
             self.cursor = self.conn.cursor()  # Uses the cursor of our connection to execute commands
             self.cursor.execute("PRAGMA foreign_keys = ON") #Enable foreign key support

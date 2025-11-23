@@ -10,43 +10,13 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # Expand Room Number Width
+        self.ui.tableWidget.setColumnWidth(0, 150)
+
+        #Username for greetings
         self.username = username
         self.ui.username.setText(username.title())
         self.db = HotelDatabase(username)  # Connect to database
-
-        # Keep track of nav buttons
-        self.nav_buttons = [
-            self.ui.room_btn,
-            self.ui.reserve_btn
-        ]
-
-        # --- Style definitions ---
-        self.default_style = """
-            QPushButton {
-                background-color: white;
-                color: black;
-                border-radius: 10px;
-                border: 2px solid rgb(255, 255, 255);
-                padding: 5px;
-            }
-            QPushButton:hover {
-                background-color: rgb(230, 230, 230);
-            }
-        """
-
-        self.active_style = """
-            QPushButton {
-                background-color: rgb(85, 170, 255);
-                color: white;
-                border-radius: 10px;
-                border: 2px solid rgb(85, 170, 255);
-                padding: 5px;
-            }
-        """
-
-        # Apply default style
-        for btn in self.nav_buttons:
-            btn.setStyleSheet(self.default_style)
 
         # Connect buttons
         self.ui.room_btn.clicked.connect(self.showRooms)
@@ -98,21 +68,12 @@ class MainWindow(QMainWindow):
         else:
             event.ignore()
 
-    def resetButtonStyles(self):
-        # Reset all button styles to default
-        for btn in self.nav_buttons:
-            btn.setStyleSheet(self.default_style)
-
     def showRooms(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.Rooms)
-        self.resetButtonStyles()
-        self.ui.room_btn.setStyleSheet(self.active_style)
         self.display_rooms()  # Show rooms when we click the Room button
 
     def showReserve(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.Reserve)
-        self.resetButtonStyles()
-        self.ui.reserve_btn.setStyleSheet(self.active_style)
         self.display_reservations()  # Show reservations when we click the Reserve button
 
     def display_rooms(self):
@@ -277,7 +238,17 @@ class MainWindow(QMainWindow):
             self.ui.tableWidget_2.setItem(row, 3, QTableWidgetItem(room_number))
             self.ui.tableWidget_2.setItem(row, 4, QTableWidgetItem(checkin_date))
             self.ui.tableWidget_2.setItem(row, 5, QTableWidgetItem(checkout_date))
-            self.ui.tableWidget_2.setItem(row, 6, QTableWidgetItem(payment_status))
+
+            # Set color for each data for Payment Status
+            payment_status_item = QTableWidgetItem(payment_status)
+            if payment_status == "Paid":
+                payment_status_item.setBackground(QBrush(QColor(34, 177, 76)))  # Green
+            elif payment_status == "Pending":
+                payment_status_item.setBackground(QBrush(QColor(255, 192, 0)))  # Orange
+            elif payment_status == "Cancelled":
+                payment_status_item.setBackground(QBrush(QColor(192, 0, 0)))  # Red
+            payment_status_item.setForeground(QBrush(QColor(255, 255, 255)))  # White text
+            self.ui.tableWidget_2.setItem(row, 6, payment_status_item)
 
             # Create Edit and Delete buttons for the Action column
             action_widget = QWidget()
