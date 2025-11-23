@@ -76,11 +76,11 @@ class HotelDatabase:
             print(f"Error fetching room: {e}")
             return None
 
-    def add_room(self, room_type, price_rate, capacity, description):
+    def add_room(self, room_type, price_rate, capacity, description, status):
         # Add a new room to database
         try:
-            sql = "INSERT INTO rooms (type, price_rate, capacity, description) VALUES (?, ?, ?, ?)"
-            self.cursor.execute(sql, (room_type, price_rate, capacity, description))
+            sql = "INSERT INTO rooms (type, price_rate, capacity, description, status) VALUES (?, ?, ?, ?, ?)"
+            self.cursor.execute(sql, (room_type, price_rate, capacity, description, status))
             self.conn.commit()
             return True, "Room added successfully"
         except sqlite3.Error as e:
@@ -326,7 +326,7 @@ class CrudDialog(QDialog):
             return
 
         # Add room to database
-        success, message = self.db.add_room(room_type, price_rate, capacity, description)
+        success, message = self.db.add_room(room_type, price_rate, capacity, description, status)
 
         if success:
             QMessageBox.information(self, "Success", message)

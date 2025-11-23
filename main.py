@@ -1,4 +1,4 @@
-from PyQt6.QtGui import QPixmap, QIcon
+from PyQt6.QtGui import QPixmap, QIcon, QBrush, QColor
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QPushButton, QWidget, QHBoxLayout
 from main_window import Ui_MainWindow
 from crud import CrudDialog, HotelDatabase
@@ -58,8 +58,13 @@ class MainWindow(QMainWindow):
         # Connect add reservation button
         self.ui.addreserve_btn.clicked.connect(self.showAddReservationDialog)
 
-        # Default page
-        self.showRooms()
+        # Store all data for filtering (initialize before loading data)
+        self.all_rooms = []
+        self.all_reservations = []
+
+        # Connect search fields for real-time filtering
+        self.ui.searchEdit_room.textChanged.connect(self.filter_rooms)
+        self.ui.searchEdit_reserve.textChanged.connect(self.filter_reservations)
 
         # logo ka system
         logo = QPixmap("icons/hotel64.png")
@@ -82,13 +87,8 @@ class MainWindow(QMainWindow):
         # Logout button function
         self.ui.logout_btn.clicked.connect(self.close)
 
-        # Connect search fields for real-time filtering
-        self.ui.searchEdit_room.textChanged.connect(self.filter_rooms)
-        self.ui.searchEdit_reserve.textChanged.connect(self.filter_reservations)
-
-        # Store all data for filtering
-        self.all_rooms = []
-        self.all_reservations = []
+        # Default page (load data after everything is set up)
+        self.showRooms()
 
     def closeEvent(self, event):
         result = QMessageBox.question(self, "Confirm logout", "Are you sure you want to log out?",
@@ -123,6 +123,10 @@ class MainWindow(QMainWindow):
         self.filter_rooms()
 
     def filter_rooms(self):
+        # Make sure we have data loaded
+        if not self.all_rooms:
+            self.all_rooms = self.db.get_all_rooms()
+        
         # Get the search text
         search_text = self.ui.searchEdit_room.text().lower().strip()
 
@@ -133,12 +137,13 @@ class MainWindow(QMainWindow):
         filtered_rooms = []
         for room in self.all_rooms:
             # Check if search text matches any column
-            room_number = str(room['room_number']).lower()
-            room_type = str(room['type']).lower()
-            price_rate = str(room['price_rate']).lower()
-            status = str(room['status']).lower()
-            capacity = str(room['capacity']).lower()
-            description = str(room['description']).lower()
+            # Handle None values by converting to empty string
+            room_number = str(room['room_number'] if room['room_number'] is not None else '').lower()
+            room_type = str(room['type'] if room['type'] is not None else '').lower()
+            price_rate = str(room['price_rate'] if room['price_rate'] is not None else '').lower()
+            status = str(room['status'] if room['status'] is not None else '').lower()
+            capacity = str(room['capacity'] if room['capacity'] is not None else '').lower()
+            description = str(room['description'] if room['description'] is not None else '').lower()
 
             # If search is empty or matches any field, include this room
             if (search_text == "" or 
@@ -167,7 +172,18 @@ class MainWindow(QMainWindow):
             self.ui.tableWidget.setItem(row, 0, QTableWidgetItem(room_number))
             self.ui.tableWidget.setItem(row, 1, QTableWidgetItem(room_type))
             self.ui.tableWidget.setItem(row, 2, QTableWidgetItem(price_rate))
-            self.ui.tableWidget.setItem(row, 3, QTableWidgetItem(status))
+
+            # Customized color of status from table
+            status_item = QTableWidgetItem(status)
+            if status == "Available":
+                status_item.setBackground(QBrush(QColor(34, 177, 76)))  # Green
+            elif status == "Occupied":
+                status_item.setBackground(QBrush(QColor(255, 192, 0)))  # Orange
+            elif status == "Maintenance":
+                status_item.setBackground(QBrush(QColor(192, 0, 0)))  # Red
+            status_item.setForeground(QBrush(QColor(255, 255, 255)))  # White text
+            self.ui.tableWidget.setItem(row, 3, status_item)
+
             self.ui.tableWidget.setItem(row, 4, QTableWidgetItem(capacity))
             self.ui.tableWidget.setItem(row, 5, QTableWidgetItem(description))
 
@@ -206,6 +222,10 @@ class MainWindow(QMainWindow):
         self.filter_reservations()
 
     def filter_reservations(self):
+        # Make sure we have data loaded
+        if not self.all_reservations:
+            self.all_reservations = self.db.get_all_reservations()
+        
         # Get the search text
         search_text = self.ui.searchEdit_reserve.text().lower().strip()
 
@@ -216,13 +236,14 @@ class MainWindow(QMainWindow):
         filtered_reservations = []
         for reservation in self.all_reservations:
             # Check if search text matches any column
-            guest_id = str(reservation['guest_id']).lower()
-            guest_name = str(reservation['guest_name']).lower()
-            contact = str(reservation['contact']).lower()
-            room_number = str(reservation['room_number']).lower()
-            checkin_date = str(reservation['checkin_date']).lower()
-            checkout_date = str(reservation['checkout_date']).lower()
-            payment_status = str(reservation['payment_status']).lower()
+            # Handle None values by converting to empty string
+            guest_id = str(reservation['guest_id'] if reservation['guest_id'] is not None else '').lower()
+            guest_name = str(reservation['guest_name'] if reservation['guest_name'] is not None else '').lower()
+            contact = str(reservation['contact'] if reservation['contact'] is not None else '').lower()
+            room_number = str(reservation['room_number'] if reservation['room_number'] is not None else '').lower()
+            checkin_date = str(reservation['checkin_date'] if reservation['checkin_date'] is not None else '').lower()
+            checkout_date = str(reservation['checkout_date'] if reservation['checkout_date'] is not None else '').lower()
+            payment_status = str(reservation['payment_status'] if reservation['payment_status'] is not None else '').lower()
 
             # If search is empty or matches any field, include this reservation
             if (search_text == "" or 
