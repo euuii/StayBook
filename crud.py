@@ -17,6 +17,7 @@ class HotelDatabase:
             self.conn = sqlite3.connect(self.username)  # Connect to the database based on username
             self.conn.row_factory = sqlite3.Row  # Access results by column name instead of index
             self.cursor = self.conn.cursor()  # Uses the cursor of our connection to execute commands
+            self.cursor.execute("PRAGMA foreign_keys = ON") #Enable foreign key support
 
             # Create rooms table
             self.cursor.execute("""
@@ -39,7 +40,8 @@ class HotelDatabase:
                     room_number INTEGER,
                     checkin_date TEXT,
                     checkout_date TEXT,
-                    payment_status TEXT
+                    payment_status TEXT,
+                    FOREIGN KEY (room_number) REFERENCES rooms(room_number)
                                 )
                 """)
             self.conn.commit()
@@ -116,6 +118,10 @@ class HotelDatabase:
             self.cursor.execute(sql, (room_number,))
             self.conn.commit()
             return True, "Room deleted successfully"
+        except sqlite3.IntegrityError as e:
+            # This catches the foreign key constraint error
+            self.conn.rollback()
+            return False, "Room is occupied. Please cancel the reservation first."
         except sqlite3.Error as e:
             self.conn.rollback()
             return False, f"Error deleting room: {e}"
