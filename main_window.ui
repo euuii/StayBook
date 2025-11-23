@@ -10,6 +10,12 @@
     <height>699</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Open Sans</family>
+    <pointsize>11</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -70,22 +76,6 @@ padding: 10px</string>
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="2">
-            <spacer name="horizontalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Policy::Expanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="0" column="0">
             <spacer name="horizontalSpacer_6">
              <property name="orientation">
@@ -102,48 +92,21 @@ padding: 10px</string>
              </property>
             </spacer>
            </item>
-           <item row="1" column="1" alignment="Qt::AlignmentFlag::AlignLeft">
-            <widget class="QFrame" name="greet_2">
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
+           <item row="0" column="2">
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
              </property>
-             <property name="styleSheet">
-              <string notr="true">QFrame{
-	background: transparent	
-}</string>
+             <property name="sizeType">
+              <enum>QSizePolicy::Policy::Expanding</enum>
              </property>
-             <layout class="QHBoxLayout" name="greet">
-              <item>
-               <widget class="QLabel" name="welcome">
-                <property name="font">
-                 <font>
-                  <pointsize>24</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background: transparent;</string>
-                </property>
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Welcome,&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="username">
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Username&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item row="0" column="1">
             <widget class="QLabel" name="label">
@@ -176,12 +139,59 @@ padding: 10px</string>
              </property>
             </widget>
            </item>
+           <item row="1" column="1">
+            <widget class="QFrame" name="greet_2">
+             <property name="font">
+              <font>
+               <family>Poppins</family>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QFrame{
+	background: transparent	
+}</string>
+             </property>
+             <layout class="QHBoxLayout" name="greet">
+              <item>
+               <widget class="QLabel" name="welcome">
+                <property name="font">
+                 <font>
+                  <family>Open Sans</family>
+                  <pointsize>24</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background: transparent;</string>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Welcome,&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="username">
+                <property name="font">
+                 <font>
+                  <family>Open Sans</family>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Username&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
           <widget class="QPushButton" name="logout_btn">
            <property name="font">
             <font>
+             <family>Open Sans</family>
              <pointsize>12</pointsize>
             </font>
            </property>
@@ -262,6 +272,7 @@ QGroupBox{
             <widget class="QPushButton" name="room_btn">
              <property name="font">
               <font>
+               <family>Open Sans</family>
                <pointsize>11</pointsize>
               </font>
              </property>
@@ -277,6 +288,7 @@ QGroupBox{
             <widget class="QPushButton" name="reserve_btn">
              <property name="font">
               <font>
+               <family>Open Sans</family>
                <pointsize>11</pointsize>
               </font>
              </property>
@@ -301,7 +313,7 @@ QGroupBox{
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Rooms">
        <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -368,6 +380,7 @@ QGroupBox{
              <widget class="QPushButton" name="addroom_btn">
               <property name="font">
                <font>
+                <family>Poppins</family>
                 <pointsize>12</pointsize>
                </font>
               </property>
@@ -425,6 +438,7 @@ QPushButton::hover{
              <widget class="QLineEdit" name="searchEdit_room">
               <property name="font">
                <font>
+                <family>Poppins</family>
                 <pointsize>11</pointsize>
                </font>
               </property>
@@ -445,6 +459,7 @@ QPushButton::hover{
            <widget class="QTableWidget" name="tableWidget">
             <property name="font">
              <font>
+              <family>Poppins</family>
               <pointsize>11</pointsize>
              </font>
             </property>
@@ -503,6 +518,7 @@ QPushButton::hover{
            <widget class="QTableWidget" name="tableWidget_2">
             <property name="font">
              <font>
+              <family>Open Sans</family>
               <pointsize>11</pointsize>
              </font>
             </property>
@@ -558,6 +574,12 @@ QPushButton::hover{
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <item>
              <widget class="QLabel" name="label_4">
+              <property name="font">
+               <font>
+                <family>Open Sans</family>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Reservation Management&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Manage guest reservations and payments&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
@@ -583,6 +605,7 @@ QPushButton::hover{
              <widget class="QPushButton" name="addreserve_btn">
               <property name="font">
                <font>
+                <family>Open Sans</family>
                 <pointsize>11</pointsize>
                </font>
               </property>
@@ -672,6 +695,7 @@ QPushButton::hover{
              <widget class="QLineEdit" name="searchEdit_reserve">
               <property name="font">
                <font>
+                <family>Poppins</family>
                 <pointsize>11</pointsize>
                </font>
               </property>
