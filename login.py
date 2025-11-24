@@ -118,22 +118,51 @@ class LoginDialog(QDialog):
         self.ui.showpassword_btn.setIcon(self.hidepassword_icon)
         self.ui.showpassword_btn.clicked.connect(self.showpassword)
         self.ui.showpassword_btn_2.setIcon(self.hidepassword_icon)
+        self.ui.showpassword_btn_2.clicked.connect(self.showpassword_2)
         self.ui.showpassword_btn_3.setIcon(self.hidepassword_icon)
+        self.ui.showpassword_btn_3.clicked.connect(self.showpassword_3)
         self.ui.showpassword_btn_4.setIcon(self.hidepassword_icon)
+        self.ui.showpassword_btn_4.clicked.connect(self.showpassword_4)
 
     def show_admin_page(self):
+        self.ui.adminPass_Login.setEchoMode(QLineEdit.EchoMode.Password)
         self.ui.stackedWidget.setCurrentWidget(self.ui.admin_page)
 
     def show_user_page(self):
+        self.ui.userpassLogin_lineEdit.setEchoMode(QLineEdit.EchoMode.Password)
         self.ui.stackedWidget.setCurrentWidget(self.ui.user_page)
 
     def showpassword(self):
-        if self.ui.userpassLogin_lineEdit.echoMode() == QLineEdit.EchoMode.Password:
-            self.ui.userpassLogin_lineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
-            self.ui.showpassword_btn.setIcon(self.showpassword_icon)
-        else:
-            self.ui.userpassLogin_lineEdit.setEchoMode(QLineEdit.EchoMode.Password)
-            self.ui.showpassword_btn.setIcon(self.hidepassword_icon)
+        if self.ui.userpassLogin_lineEdit.echoMode() == QLineEdit.EchoMode.Password:    #If echomode is password
+            self.ui.userpassLogin_lineEdit.setEchoMode(QLineEdit.EchoMode.Normal)       #Make echomode to normal
+            self.ui.showpassword_btn.setIcon(self.showpassword_icon)                    #Change showpassword icon
+        else:                                                                           #If echomode is normal
+            self.ui.userpassLogin_lineEdit.setEchoMode(QLineEdit.EchoMode.Password)     #Make echomode to password
+            self.ui.showpassword_btn.setIcon(self.hidepassword_icon)                    #Change showpassword icon
+
+    def showpassword_2(self):
+            if self.ui.adminPass_Login.echoMode() == QLineEdit.EchoMode.Password:
+                self.ui.adminPass_Login.setEchoMode(QLineEdit.EchoMode.Normal)
+                self.ui.showpassword_btn_2.setIcon(self.showpassword_icon)
+            else:
+                self.ui.adminPass_Login.setEchoMode(QLineEdit.EchoMode.Password)
+                self.ui.showpassword_btn_2.setIcon(self.hidepassword_icon)
+
+    def showpassword_3(self):
+                if self.ui.adminPassword_lineEdit.echoMode() == QLineEdit.EchoMode.Password:
+                    self.ui.adminPassword_lineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
+                    self.ui.showpassword_btn_3.setIcon(self.showpassword_icon)
+                else:
+                    self.ui.adminPassword_lineEdit.setEchoMode(QLineEdit.EchoMode.Password)
+                    self.ui.showpassword_btn_3.setIcon(self.hidepassword_icon)
+
+    def showpassword_4(self):
+                    if self.ui.adminPassword_lineEdit_2.echoMode() == QLineEdit.EchoMode.Password:
+                        self.ui.adminPassword_lineEdit_2.setEchoMode(QLineEdit.EchoMode.Normal)
+                        self.ui.showpassword_btn_4.setIcon(self.showpassword_icon)
+                    else:
+                        self.ui.adminPassword_lineEdit_2.setEchoMode(QLineEdit.EchoMode.Password)
+                        self.ui.showpassword_btn_4.setIcon(self.hidepassword_icon)
 
     def handle_login_user(self):
         username = self.ui.usernameLogin_lineEdit.text().strip()
