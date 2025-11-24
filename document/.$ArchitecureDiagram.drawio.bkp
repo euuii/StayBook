@@ -1,0 +1,49 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
+  <diagram name="Page-1" id="rOJuKiTXaI9UADlauJ9l">
+    <mxGraphModel dx="961" dy="532" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="LU30spCESlqhlvVoO_0b-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="LU30spCESlqhlvVoO_0b-18" target="LU30spCESlqhlvVoO_0b-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-18" value="Frontend (GUI Layer)" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="30" width="290" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-19" value="Login Dialog" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="LU30spCESlqhlvVoO_0b-18">
+          <mxGeometry x="10" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-20" value="&lt;div style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Main Window&lt;/span&gt;&lt;/div&gt;&lt;div&gt;- Room Management&lt;/div&gt;&lt;div&gt;- Reservation&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="LU30spCESlqhlvVoO_0b-18">
+          <mxGeometry x="140" y="30" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-22" value="CRUD Dialog&lt;div&gt;- Add/Edit Dialog&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="LU30spCESlqhlvVoO_0b-18">
+          <mxGeometry x="85" y="100" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="LU30spCESlqhlvVoO_0b-27" target="LU30spCESlqhlvVoO_0b-35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-27" value="Backend (Logic Layer)" style="swimlane;whiteSpace=wrap;html=1;startSize=23;" vertex="1" parent="1">
+          <mxGeometry x="120" y="270" width="290" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-28" value="Logic Classes&lt;div&gt;- MainWindow&lt;/div&gt;&lt;div&gt;- CrudDialog&lt;/div&gt;&lt;div&gt;- LoginDialog&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="LU30spCESlqhlvVoO_0b-27">
+          <mxGeometry x="62.5" y="40" width="165" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-31" value="Database Handlers&lt;div&gt;- HotelDatabase&lt;/div&gt;&lt;div&gt;- AccountDatabase&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="LU30spCESlqhlvVoO_0b-27">
+          <mxGeometry x="62.5" y="110" width="165" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-34" value="Pyqt6 Signal/Slots" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="220" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-35" value="Database Layer" style="swimlane;whiteSpace=wrap;html=1;startSize=23;" vertex="1" parent="1">
+          <mxGeometry x="120" y="530" width="290" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-36" value="accounts.db&lt;div&gt;- accounts table&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="LU30spCESlqhlvVoO_0b-35">
+          <mxGeometry x="20" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LU30spCESlqhlvVoO_0b-37" value="username.db&lt;div&gt;- rooms table&lt;/div&gt;&lt;div&gt;- reservations table&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="LU30spCESlqhlvVoO_0b-35">
+          <mxGeometry x="150" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
