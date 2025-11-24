@@ -1,6 +1,6 @@
 import sqlite3
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QDialog, QMessageBox
+from PyQt6.QtGui import QPixmap, QIcon
+from PyQt6.QtWidgets import QDialog, QMessageBox, QLineEdit
 from login_dialog import Ui_Dialog
 
 class AccountDatabase:
@@ -18,17 +18,41 @@ class AccountDatabase:
             self.cursor = self.conn.cursor() # Uses the cursor of our connection to execute commands
 
             self.cursor.execute("""
-                CREATE TABLE IF NOT EXISTS accounts (
-                uid INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT UNIQUE NOT NULL,
-                password TEXT NOT NULL)
+                CREATE TABLE IF NOT EXISTS admin_table (
+                    admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    password TEXT NOT NULL
+                )
             """)
         except sqlite3.Error as e: #Will run if there is an error
             print(f"Database connection error: {e}") #Prints the error message
 
-    def validate_account(self, username, password):
+    def check_existing_admin(self):
         try:
-            sql = "SELECT * FROM accounts WHERE username = ? AND password = ?" #SQL command to validate account
+            sql = "SELECT * FROM admin_table"
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            if result:
+                return True, "Admin exists"
+            else:
+                return False, "No administrator detected. Please create one."
+        except sqlite3.Error as e:
+            return False, f"Admin does not exist: {e}"
+
+    def create_table_users(self):
+        try:
+            self.cursor.execute("""
+                CREATE TABLE IF NOT EXISTS users_table (
+                    uid INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT UNIQUE NOT NULL,
+                    password TEXT NOT NULL
+                )
+            """)
+        except sqlite3.Error as e:
+            print(f"Database connection error: {e}")
+
+    def validate_users(self, username, password):
+        try:
+            sql = "SELECT * FROM users_table WHERE username = ? AND password = ?" #SQL command to validate account
             self.cursor.execute(sql, (username, password))
             result = self.cursor.fetchone() # result will be true if there's a match, none if there's no match
             if result:
@@ -38,18 +62,15 @@ class AccountDatabase:
         except sqlite3.Error as e:
             return False, f"Error validating account: {e}"
 
-    def add_account(self, username, password):
+    def create_administrator(self, password):
         try:
-            sql = "INSERT INTO accounts (username, password) VALUES (?, ?)" #SQL command to insert account
-            self.cursor.execute(sql, (username, password)) # Executes the SQL command from sql variable
-            self.conn.commit() # Commits the changes to the database
-            return True, "Account created successfully"
-        except sqlite3.IntegrityError:
-            return False, "Username unavailable"
+            sql = "INSERT INTO admin_table(password) VALUES (?)"
+            self.cursor.execute(sql, (password,))
+            self.conn.commit()
+            return True, "Administrator Creation Successful"
         except sqlite3.Error as e:
-            self.conn.rollback() # Rollback changes if there is an error
-            return False, f"Error adding account: {e}"
-
+            self.conn.rollback()
+            return False, f"Error creating admin: {e}"
 
 class LoginDialog(QDialog):
     def __init__(self):
@@ -57,41 +78,73 @@ class LoginDialog(QDialog):
         self.ui = Ui_Dialog() #Create an instance of the login dialog
         self.ui.setupUi(self) #setup the UI
 
-        self.db = AccountDatabase() #Object of the AccountDatabase class
+        self.db = AccountDatabase()
+        self.handle_check_admin()
 
         self.login_successful = False
-        self.logged_in_username = None
+        self.logged_in_username = None #Masudlan lang kung mag login dun
 
-        self.show_login_page() #Default page
-
-        # Switch between Login and Sign-up pages (stacked widget)
-        self.ui.signuppage_btn.clicked.connect(self.show_signup_page)
-        self.ui.loginpage_btn.clicked.connect(self.show_login_page)
+        # Switch between User and Admin pages (stacked widget)
+        self.ui.admin_btn.clicked.connect(self.show_admin_page)
+        self.ui.user_btn.clicked.connect(self.show_user_page)
 
         # Handle primary actions
-        self.ui.login_btn.clicked.connect(self.handle_login)
-        self.ui.signup_btn.clicked.connect(self.handle_signup)
+        self.ui.login_btn.clicked.connect(self.handle_login_user)
+        self.ui.createAdmin_btn.clicked.connect(self.handle_create_admin)
 
         # logo ka system
         logo = QPixmap("icons/hotel64.png")
         self.ui.logo.setPixmap(logo)
 
-    def show_signup_page(self):
-        self.ui.stackedWidget.setCurrentWidget(self.ui.signup_page)
+        # icons of user
+        self.ui.pushButton_2.setIcon(QIcon("icons/userwhite24.png"))
+        self.ui.user_btn.setIcon(QIcon("icons/userblack24.png"))
 
-    def show_login_page(self):
-        self.ui.stackedWidget.setCurrentWidget(self.ui.login_page)
+        # icons of admin
+        self.ui.admin_btn.setIcon(QIcon("icons/adminblack24.png"))
+        self.ui.pushButton_6.setIcon(QIcon("icons/adminwhite24.png"))
 
-    def handle_login(self):
-        username = self.ui.lineEdit.text().strip()
-        password = self.ui.lineEdit_2.text().strip()
+        # icons for username, password and show password
+        self.ui.username_icon.setPixmap(QPixmap("icons/username16.png"))
+        password_icon = QPixmap("icons/password16.png")
+        self.ui.password_icon.setPixmap(password_icon)
+        self.ui.password_icon_2.setPixmap(password_icon)
+        self.ui.password_icon_3.setPixmap(password_icon)
+        self.ui.password_icon_4.setPixmap(password_icon)
+
+        # Show password function
+        self.showpassword_icon = QIcon("icons/showpassword16.png")
+        self.hidepassword_icon = QIcon("icons/hidepassword16.png")
+        self.ui.showpassword_btn.setIcon(self.hidepassword_icon)
+        self.ui.showpassword_btn.clicked.connect(self.showpassword)
+        self.ui.showpassword_btn_2.setIcon(self.hidepassword_icon)
+        self.ui.showpassword_btn_3.setIcon(self.hidepassword_icon)
+        self.ui.showpassword_btn_4.setIcon(self.hidepassword_icon)
+
+    def show_admin_page(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.admin_page)
+
+    def show_user_page(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.user_page)
+
+    def showpassword(self):
+        if self.ui.userpassLogin_lineEdit.echoMode() == QLineEdit.EchoMode.Password:
+            self.ui.userpassLogin_lineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.ui.showpassword_btn.setIcon(self.showpassword_icon)
+        else:
+            self.ui.userpassLogin_lineEdit.setEchoMode(QLineEdit.EchoMode.Password)
+            self.ui.showpassword_btn.setIcon(self.hidepassword_icon)
+
+    def handle_login_user(self):
+        username = self.ui.usernameLogin_lineEdit.text().strip()
+        password = self.ui.userpassLogin_lineEdit.text().strip()
 
         if not username or not password: #If username or password is empty
             QMessageBox.warning(
                 self, "Missing Information", "Please enter both username and password."
             )
         else:
-            success, message = self.db.validate_account(username, password)
+            success, message = self.db.validate_users(username, password)
             if success:
                 self.login_successful = True # Amo jang syntax ya ginahulat ka staybook.py para mag diretso sa main window
                 self.logged_in_username = username
@@ -100,22 +153,32 @@ class LoginDialog(QDialog):
                 QMessageBox.warning(self, "Login Failed", message)
         return
 
-    def handle_signup(self):
-        username = self.ui.lineEdit_3.text().strip()
-        password = self.ui.lineEdit_4.text().strip()
-
-        if not username or not password: #
-            QMessageBox.warning(
-                self, "Missing Information", "Please enter both username and password."
-            )
-        elif username == "accounts":    #The name of each database is based on the username
-                                        #accounts.db is reserved for the login database
-            QMessageBox.warning(self, "Sign Up Failed", "Username unavailable")
+    def handle_check_admin(self):
+        check, message = self.db.check_existing_admin()
+        if check:
+            self.show_user_page()
         else:
-            success, message = self.db.add_account(username, password)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.createAdmin_page)
+            QMessageBox.warning(self, "No Admin", message)
+
+    def handle_create_admin(self):
+        password = self.ui.adminPassword_lineEdit.text().strip()
+        password2 = self.ui.adminPassword_lineEdit_2.text().strip()
+
+        if not password or not password2:
+            QMessageBox.warning(
+                self, "Missing Information", "Please enter both password and confirm password."
+            )
+        elif password != password2:
+            QMessageBox.warning(
+                self, "Password do not match", "Confirm password is different to your password."
+            )
+        else:
+            success, message = self.db.create_administrator(password)
             if success:
-                QMessageBox.information(self, "Account Created", message)
-                self.show_login_page()
+                self.db.create_table_users()
+                QMessageBox.information(self, "Admin Created", message)
+                self.ui.stackedWidget.setCurrentWidget(self.ui.user_page)
             else:
-                QMessageBox.warning(self, "Sign Up Failed", message)
+                QMessageBox.warning(self, "Admin Error Creating", message)
         return
