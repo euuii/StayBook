@@ -512,6 +512,12 @@ QPushButton{
                <layout class="QHBoxLayout" name="horizontalLayout_3">
                 <item>
                  <widget class="QPushButton" name="pushButton_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>100</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>11</pointsize>
@@ -522,12 +528,11 @@ QPushButton{
 color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
-                   <string>User</string>
+                   <string> Branch</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normalon>../362475b2/userwhite24.png</normalon>
-                   </iconset>
+                    <normaloff>../b5c92ba4/branchwhite24.png</normaloff>../b5c92ba4/branchwhite24.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -539,6 +544,12 @@ color: rgb(255, 255, 255);</string>
                 </item>
                 <item>
                  <widget class="QPushButton" name="admin_btn">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>100</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>11</pointsize>
@@ -579,7 +590,7 @@ color: rgb(255, 255, 255);</string>
                 <string notr="true"/>
                </property>
                <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Username&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Branch&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
              </item>
@@ -591,27 +602,47 @@ color: rgb(255, 255, 255);</string>
                <property name="frameShadow">
                 <enum>QFrame::Shadow::Raised</enum>
                </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_6">
-                <item>
+               <layout class="QFormLayout" name="formLayout">
+                <item row="0" column="0">
                  <widget class="QLabel" name="username_icon">
                   <property name="text">
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>../97c2e859/username16.png</pixmap>
+                   <pixmap>../ae4c3c7b/branchblack24.png</pixmap>
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <widget class="QLineEdit" name="usernameLogin_lineEdit">
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="branch_combobox">
                   <property name="font">
                    <font>
                     <pointsize>11</pointsize>
                    </font>
                   </property>
-                  <property name="placeholderText">
-                   <string>Enter your username</string>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
+                  <item>
+                   <property name="text">
+                    <string>tae</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>eqwe</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>wqeqewqw</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>eqeqw</string>
+                   </property>
+                  </item>
                  </widget>
                 </item>
                </layout>
@@ -809,18 +840,23 @@ QPushButton{
                <layout class="QHBoxLayout" name="horizontalLayout_4">
                 <item>
                  <widget class="QPushButton" name="user_btn">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>100</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>11</pointsize>
                    </font>
                   </property>
                   <property name="text">
-                   <string>User</string>
+                   <string> Branch</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normalon>../41c975ac/userblack24.png</normalon>
-                   </iconset>
+                    <normaloff>../ae4c3c7b/branchblack24.png</normaloff>../ae4c3c7b/branchblack24.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -832,6 +868,12 @@ QPushButton{
                 </item>
                 <item>
                  <widget class="QPushButton" name="pushButton_6">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>100</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>11</pointsize>
@@ -881,7 +923,7 @@ color: rgb(255, 255, 255);</string>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>20</height>
+                 <height>42</height>
                 </size>
                </property>
               </spacer>
