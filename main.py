@@ -2,6 +2,7 @@ from PyQt6.QtGui import QPixmap, QIcon, QBrush, QColor
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QPushButton, QWidget, QHBoxLayout
 from main_window import Ui_MainWindow
 from crud import CrudDialog, HotelDatabase
+from login import AccountDatabase
 
 
 class MainWindow(QMainWindow):
@@ -10,8 +11,9 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # Expand Room Number Width
+        # Expand Column Width
         self.ui.tableWidget.setColumnWidth(0, 150)
+        self.ui.tableWidget_3.setColumnWidth(0, 200)
 
         #Username for greetings
         self.username = username
@@ -28,13 +30,18 @@ class MainWindow(QMainWindow):
         # Connect add reservation button
         self.ui.addreserve_btn.clicked.connect(self.showAddReservationDialog)
 
+        # Connect add branch button
+        self.ui.addbranch_btn.clicked.connect(self.showAddBranchDialog)
+
         # Store all data for filtering (initialize before loading data)
         self.all_rooms = []
         self.all_reservations = []
+        self.all_branches = []
 
         # Connect search fields for real-time filtering
         self.ui.searchEdit_room.textChanged.connect(self.filter_rooms)
         self.ui.searchEdit_reserve.textChanged.connect(self.filter_reservations)
+        self.ui.searchEdit_branch.textChanged.connect(self.filter_branches)
 
         # logo ka system
         logo = QPixmap("icons/hotel64.png")
@@ -44,11 +51,13 @@ class MainWindow(QMainWindow):
         add_icon = QIcon("icons/add32.png")
         self.ui.addroom_btn.setIcon(add_icon)
         self.ui.addreserve_btn.setIcon(add_icon)
+        self.ui.addbranch_btn.setIcon(add_icon)
 
         # add search icon
         search_icon = QPixmap("icons/search16.png")
         self.ui.searchIcon_room.setPixmap(search_icon)
         self.ui.searchIcon_reserve.setPixmap(search_icon)
+        self.ui.search_icon.setPixmap(search_icon)
 
         # logout icon
         logout_icon = QIcon("icons/logout32white.png")
@@ -58,7 +67,11 @@ class MainWindow(QMainWindow):
         self.ui.logout_btn.clicked.connect(self.close)
 
         # Default page (load data after everything is set up)
-        self.showRooms()
+        if username == "Administrator":
+            self.ui.stackedWidget.setCurrentWidget(self.ui.Admin)
+            self.display_branches()
+        else:
+            self.showRooms()
 
     def closeEvent(self, event):
         result = QMessageBox.question(self, "Confirm logout", "Are you sure you want to log out?",
@@ -277,6 +290,88 @@ class MainWindow(QMainWindow):
             # Put the buttons into the Action column (column 7)
             self.ui.tableWidget_2.setCellWidget(row, 7, action_widget)
 
+    def display_branches(self):
+        # Get all branches from database
+        branch_db = AccountDatabase()
+        self.all_branches = branch_db.get_all_branches()
+
+        # Display all branches (filtering will be handled by filter_branches)
+        self.filter_branches()
+
+    def filter_branches(self):
+        # Make sure we have data loaded
+        if not self.all_branches:
+            branch_db = AccountDatabase()
+            self.all_branches = branch_db.get_all_branches()
+
+        # Get the search text
+        search_text = self.ui.searchEdit_branch.text().lower().strip()
+
+        # Clear the table first
+        self.ui.tableWidget_3.setRowCount(0)
+
+        # Filter branches based on search text
+        filtered_branches = []
+        for branch in self.all_branches:
+            # Check if search text matches any column
+            # Handle None values by converting to empty string
+            username = str(branch['username'] if branch['username'] is not None else '').lower()
+            password = str(branch['password'] if branch['password'] is not None else '').lower()
+            address = str(branch['address'] if branch['address'] is not None else '').lower()
+            contact = str(branch['contact'] if branch['contact'] is not None else '').lower()
+
+            # If search is empty or matches any field, include this branch
+            if (search_text == "" or
+                    search_text in username or
+                    search_text in password or
+                    search_text in address or
+                    search_text in contact):
+                filtered_branches.append(branch)
+
+        # Set the number of rows based on filtered branches
+        self.ui.tableWidget_3.setRowCount(len(filtered_branches))
+
+        # Loop through each filtered branch and add it to the table
+        for row, branch in enumerate(filtered_branches):
+            # Get the data from each column
+            username = str(branch['username'])
+            password = str(branch['password'])
+            address = str(branch['address'])
+            contact = str(branch['contact'])
+
+            # Put the data into the table cells
+            self.ui.tableWidget_3.setItem(row, 0, QTableWidgetItem(username))
+            self.ui.tableWidget_3.setItem(row, 1, QTableWidgetItem(password))
+            self.ui.tableWidget_3.setItem(row, 2, QTableWidgetItem(address))
+            self.ui.tableWidget_3.setItem(row, 3, QTableWidgetItem(contact))
+
+            # Create Edit and Delete buttons for the Action column
+            action_widget = QWidget()
+            action_layout = QHBoxLayout()
+            action_layout.setContentsMargins(0, 0, 0, 0)  # Remove extra space
+
+            # Create Edit button
+            edit_btn = QPushButton()
+            edit_icon = QIcon("icons/edit16.png")
+            edit_btn.setIcon(edit_icon)
+            edit_btn.setMaximumWidth(60)
+            edit_btn.clicked.connect(lambda checked, bid=branch['uid']: self.edit_branch_by_id(bid))
+
+            # Create Delete button
+            delete_btn = QPushButton()
+            delete_icon = QIcon("icons/delete16.png")
+            delete_btn.setIcon(delete_icon)
+            delete_btn.setMaximumWidth(60)
+            delete_btn.clicked.connect(lambda checked, bid=branch['uid']: self.delete_branch_by_id(bid))
+
+            # Add buttons to the layout
+            action_layout.addWidget(edit_btn)
+            action_layout.addWidget(delete_btn)
+            action_widget.setLayout(action_layout)
+
+            # Put the buttons into the Action column (column 4)
+            self.ui.tableWidget_3.setCellWidget(row, 4, action_widget)
+
     def edit_room_by_number(self, room_number):
         # Get the room data from database
         room = self.db.get_room_by_number(room_number)
@@ -345,4 +440,117 @@ class MainWindow(QMainWindow):
         # Pass the main window as parent so crud dialog can refresh the tables
         crudDialog = CrudDialog(self.username, parent=self, dialog_type="reservation")
         crudDialog.ui.stackedWidget.setCurrentWidget(crudDialog.ui.reserveadd_page)
+        crudDialog.exec()
+
+    def filter_branches(self):
+        # Make sure we have data loaded
+        if not self.all_branches:
+            branch_db = AccountDatabase()
+            self.all_branches = branch_db.get_all_branches()
+
+        # Get the search text
+        search_text = self.ui.searchEdit_branch.text().lower().strip()
+
+        # Clear the table first
+        self.ui.tableWidget_3.setRowCount(0)
+
+        # Filter branches based on search text
+        filtered_branches = []
+        for branch in self.all_branches:
+            # Check if search text matches any column
+            # Handle None values by converting to empty string
+            uid = str(branch['uid'] if branch['uid'] is not None else '').lower()
+            name = str(branch['username'] if branch['username'] is not None else '').lower()
+            address = str(branch['address'] if branch['address'] is not None else '').lower()
+            contact = str(branch['contact'] if branch['contact'] is not None else '').lower()
+            password = str(branch['password'] if branch['password'] is not None else '').lower()
+
+            # If search is empty or matches any field, include this branch
+            if (search_text == "" or
+                    search_text in uid or
+                    search_text in name or
+                    search_text in address or
+                    search_text in contact or
+                    search_text in password):
+                filtered_branches.append(branch)
+
+        # Set the number of rows based on filtered branches
+        self.ui.tableWidget_3.setRowCount(len(filtered_branches))
+
+        # Loop through each filtered branch and add it to the table
+        for row, branch in enumerate(filtered_branches):
+            # Get the data from each column
+            username = str(branch['username'])
+            password = str(branch['password'])
+            address = str(branch['address'])
+            contact = str(branch['contact'])
+
+            # Put the data into the table cells
+            self.ui.tableWidget_3.setItem(row, 0, QTableWidgetItem(username))
+            self.ui.tableWidget_3.setItem(row, 1, QTableWidgetItem(password))
+            self.ui.tableWidget_3.setItem(row, 2, QTableWidgetItem(address))
+            self.ui.tableWidget_3.setItem(row, 3, QTableWidgetItem(contact))
+
+            # Create Edit and Delete buttons for the Action column
+            action_widget = QWidget()
+            action_layout = QHBoxLayout()
+            action_layout.setContentsMargins(0, 0, 0, 0)  # Remove extra space
+
+            # Create Edit button
+            edit_btn = QPushButton()
+            edit_icon = QIcon("icons/edit16.png")
+            edit_btn.setIcon(edit_icon)
+            edit_btn.setMaximumWidth(60)
+            edit_btn.clicked.connect(lambda checked, bid=branch['uid']: self.edit_branch_by_id(bid))
+
+            # Create Delete button
+            delete_btn = QPushButton()
+            delete_icon = QIcon("icons/delete16.png")
+            delete_btn.setIcon(delete_icon)
+            delete_btn.setMaximumWidth(60)
+            delete_btn.clicked.connect(lambda checked, bid=branch['uid']: self.delete_branch_by_id(bid))
+
+            # Add buttons to the layout
+            action_layout.addWidget(edit_btn)
+            action_layout.addWidget(delete_btn)
+            action_widget.setLayout(action_layout)
+
+            # Put the buttons into the Action column (column 4)
+            self.ui.tableWidget_3.setCellWidget(row, 4, action_widget)
+
+    def edit_branch_by_id(self, branch_id):
+        # Get the branch data from database
+        branch_db = AccountDatabase()
+        branch = branch_db.get_branch_by_id(branch_id)
+
+        if branch:
+            # Open the crud dialog in edit mode for branch
+            crudDialog = CrudDialog(self.username, parent=self, edit_mode=True, branch_data=branch,
+                                    dialog_type="branch")
+            crudDialog.ui.stackedWidget.setCurrentWidget(crudDialog.ui.branchedit_page)
+            crudDialog.exec()
+        else:
+            QMessageBox.warning(self, "Error", "Could not find branch data")
+
+    def delete_branch_by_id(self, branch_id):
+        # Ask for confirmation
+        result = QMessageBox.question(self, "Delete Branch",
+                                      f"Are you sure you want to delete this branch?",
+                                      QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+
+        if result == QMessageBox.StandardButton.Yes:
+            # Delete the branch from database
+            branch_db = AccountDatabase()
+            success = branch_db.delete_branch(branch_id)
+
+            if success:
+                QMessageBox.information(self, "Success", "Branch deleted successfully")
+                self.display_branches()  # Refresh the table
+            else:
+                QMessageBox.warning(self, "Error", "Error deleting branch")
+
+    def showAddBranchDialog(self):
+        # Pass the main window as parent so crud dialog can refresh the table
+        crudDialog = CrudDialog(self.username, parent=self, dialog_type="branch")
+        crudDialog.ui.stackedWidget.setCurrentWidget(crudDialog.ui.branchadd_page)
         crudDialog.exec()

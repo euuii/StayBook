@@ -3,6 +3,7 @@ import os
 from PyQt6.QtWidgets import QDialog, QMessageBox
 from PyQt6.QtCore import QDate
 from crud_dialog import Ui_Dialog
+from login import AccountDatabase
 
 
 class HotelDatabase:
@@ -15,7 +16,6 @@ class HotelDatabase:
 
     def connect_db(self):
         try:
-
             if not os.path.exists("user_database"): #Checks if user_database folder exists
                 os.makedirs("user_database") # Creates user_database folder if not exist
 
@@ -210,7 +210,7 @@ class HotelDatabase:
 
 class CrudDialog(QDialog):
     def __init__(self, username, parent=None, edit_mode=False, room_data=None, reservation_data=None,
-                 dialog_type="room"):
+                 branch_data=None, dialog_type="room"):
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
@@ -220,6 +220,7 @@ class CrudDialog(QDialog):
         self.edit_mode = edit_mode
         self.room_data = room_data
         self.reservation_data = reservation_data
+        self.branch_data = branch_data
         self.dialog_type = dialog_type  # "room" or "reservation"
 
         # Connect room buttons
@@ -230,9 +231,15 @@ class CrudDialog(QDialog):
         self.ui.addreserve_btn.clicked.connect(self.add_reservation)
         self.ui.addreserve_btn_2.clicked.connect(self.update_reservation)
 
+        # Connect branch buttons
+        self.ui.btn_addBranch.clicked.connect(self.add_branch)
+        self.ui.btn_updateBranch.clicked.connect(self.update_branch)
+
         # Connect cancel buttons
         self.ui.cancel_btn_3.clicked.connect(self.close)
         self.ui.cancel_btn_4.clicked.connect(self.close)
+        self.ui.cancel_btn_5.clicked.connect(self.close)
+        self.ui.cancel_btn_6.clicked.connect(self.close)
 
         # If this is a reservation dialog, make the date pickers easier to use
         if dialog_type == "reservation":
@@ -249,7 +256,7 @@ class CrudDialog(QDialog):
             # Setup check-out date (for adding new reservation)
             self.ui.checkoutdate_add.setCalendarPopup(True)  # Show calendar when clicked
             self.ui.checkoutdate_add.setDate(tomorrow)  # Start with tomorrow
-            self.ui.checkoutdate_add.setMinimumDate(today)  # Can't pick past dates
+            self.ui.checkoutdate_add.setMinimumDate(tomorrow)  # Can't pick past and today dates
             self.ui.checkoutdate_add.setDisplayFormat("MMM dd, yyyy")  # Show "Jan 15, 2024"
             
             # Setup check-in date (for editing reservation)
@@ -271,6 +278,10 @@ class CrudDialog(QDialog):
         # If we are in edit mode for reservation, fill the form with reservation data
         if self.edit_mode and reservation_data and dialog_type == "reservation":
             self.fill_reservation_edit_form()
+
+        # If we are in edit mode for branch, fill the form with branch data
+        if self.edit_mode and self.branch_data and dialog_type == "branch":
+            self.fill_branch_edit_form()
 
     def fill_room_edit_form(self):
         # Fill the edit form with existing room data
@@ -295,6 +306,13 @@ class CrudDialog(QDialog):
         checkout = QDate.fromString(self.reservation_data['checkout_date'], "yyyy-MM-dd")
         self.ui.checkindate_edit.setDate(checkin)
         self.ui.checkoutdate_edit.setDate(checkout)
+
+    def fill_branch_edit_form(self):
+        # Fill the edit form with existing branch data
+        self.ui.lineEdit_branchName_2.setText(self.branch_data['username'])
+        self.ui.lineEdit_branchPass_2.setText(self.branch_data['password'])
+        self.ui.lineEdit_branchAddress_2.setText(self.branch_data['address'])
+        self.ui.lineEdit_branchContact_2.setText(self.branch_data['contact'])
 
     def load_available_rooms(self):
         # Load only available rooms into the combo box
@@ -389,13 +407,20 @@ class CrudDialog(QDialog):
         contact = self.ui.contact_add.text().strip()
         room_number = self.ui.roomnum_add.currentText()
         payment_status = self.ui.payment_add.currentText()
-        checkin_date = self.ui.checkindate_add.date().toString("yyyy-MM-dd")
-        checkout_date = self.ui.checkoutdate_add.date().toString("yyyy-MM-dd")
+        checkin_qdate = self.ui.checkindate_add.date()
+        checkout_qdate = self.ui.checkoutdate_add.date()
 
         # Check if fields are empty
         if not guest_name or not contact or not room_number:
             QMessageBox.warning(self, "Invalid Input", "Please fill in all fields")
             return
+
+        if checkout_qdate <= checkin_qdate:
+            QMessageBox.warning(self, "Invalid Dates", "Check-out date must be after the check-in date.")
+            return
+
+        checkin_date = checkin_qdate.toString("yyyy-MM-dd")
+        checkout_date = checkout_qdate.toString("yyyy-MM-dd")
 
         # Add reservation to database
         success, message = self.db.add_reservation(guest_name, contact, room_number, checkin_date, checkout_date,
@@ -420,13 +445,20 @@ class CrudDialog(QDialog):
         contact = self.ui.contact_edit.text().strip()
         room_number = self.ui.roomnum_edit.currentText()
         payment_status = self.ui.payment_edit.currentText()
-        checkin_date = self.ui.checkindate_edit.date().toString("yyyy-MM-dd")
-        checkout_date = self.ui.checkoutdate_edit.date().toString("yyyy-MM-dd")
+        checkin_qdate = self.ui.checkindate_edit.date()
+        checkout_qdate = self.ui.checkoutdate_edit.date()
 
         # Check if fields are empty
         if not guest_name or not contact or not room_number:
             QMessageBox.warning(self, "Invalid Input", "Please fill in all fields")
             return
+
+        if checkout_qdate <= checkin_qdate:
+            QMessageBox.warning(self, "Invalid Dates", "Check-out date must be after the check-in date.")
+            return
+
+        checkin_date = checkin_qdate.toString("yyyy-MM-dd")
+        checkout_date = checkout_qdate.toString("yyyy-MM-dd")
 
         # Update reservation in database
         success, message = self.db.update_reservation(guest_id, guest_name, contact, room_number, checkin_date,
@@ -441,3 +473,95 @@ class CrudDialog(QDialog):
             self.close()
         else:
             QMessageBox.warning(self, "Error", message)
+
+    def add_branch(self):
+        # Get values from input fields
+        branch_name = self.ui.lineEdit_branchName.text().strip()
+        password = self.ui.lineEdit_branchPass.text().strip()
+        confirm_password = self.ui.lineEdit_branchConfPass.text().strip()
+        address = self.ui.lineEdit_branchAddress.text().strip()
+        contact = self.ui.lineEdit_branchContact.text().strip()
+
+        # Check if fields are empty
+        if not branch_name or not password or not confirm_password or not address or not contact:
+            QMessageBox.warning(self, "Missing Information", "Please fill in all fields")
+            return
+
+        # Check if passwords match
+        elif password != confirm_password:
+            QMessageBox.warning(self, "Password Mismatch", "Passwords do not match")
+            return
+
+        # Check password length
+        elif len(password) < 8:
+            QMessageBox.warning(self, "Weak Password", "Password must be at least 6 characters")
+            return
+
+        # Add branch to database
+        branch_db = AccountDatabase()
+        try:
+            sql = "INSERT INTO branches_table (username, address, contact, password) VALUES (?, ?, ?, ?)"
+            branch_db.cursor.execute(sql, (branch_name, address, contact, password))
+            branch_db.conn.commit()
+            success = True
+            message = "Branch added successfully"
+        except Exception as e:
+            branch_db.conn.rollback()
+            success = False
+            message = f"Error adding branch: {e}"
+
+        if success:
+            QMessageBox.information(self, "Success", message)
+            # Refresh the table in parent window (main window)
+            if self.parent_window:
+                self.parent_window.display_branches()
+            self.close()
+        else:
+            QMessageBox.warning(self, "Error", message)
+
+    def update_branch(self):
+        # Get values from input fields
+        branch_id = self.branch_data['uid']
+        branch_name = self.ui.lineEdit_branchName_2.text().strip()
+        password = self.ui.lineEdit_branchPass_2.text().strip()
+        confirm_password = self.ui.lineEdit_branchConfPass_2.text().strip()
+        address = self.ui.lineEdit_branchAddress_2.text().strip()
+        contact = self.ui.lineEdit_branchContact_2.text().strip()
+
+        # Check if fields are empty
+        if not branch_name or not password or not confirm_password or not address or not contact:
+            QMessageBox.warning(self, "Invalid Input", "Please fill in all fields")
+            return
+
+        # Check if passwords match
+        if password != confirm_password:
+            QMessageBox.warning(self, "Password Mismatch", "Passwords do not match")
+            return
+
+        # Check password length
+        if len(password) < 6:
+            QMessageBox.warning(self, "Weak Password", "Password must be at least 6 characters")
+            return
+
+        # Update branch in database
+        branch_db = AccountDatabase()
+        try:
+            sql = "UPDATE branches_table SET username = ?, address = ?, contact = ?, password = ? WHERE uid = ?"
+            branch_db.cursor.execute(sql, (branch_name, address, contact, password, branch_id))
+            branch_db.conn.commit()
+            success = True
+            message = "Branch updated successfully"
+        except Exception as e:
+            branch_db.conn.rollback()
+            success = False
+            message = f"Error updating branch: {e}"
+
+        if success:
+            QMessageBox.information(self, "Success", message)
+            # Refresh the table in parent window
+            if self.parent_window:
+                self.parent_window.display_branches()
+            self.close()
+        else:
+            QMessageBox.warning(self, "Error", message)
+
