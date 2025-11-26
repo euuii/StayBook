@@ -605,11 +605,23 @@ color: rgb(255, 255, 255);</string>
                <layout class="QFormLayout" name="formLayout">
                 <item row="0" column="0">
                  <widget class="QLabel" name="username_icon">
+                  <property name="minimumSize">
+                   <size>
+                    <width>16</width>
+                    <height>16</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
                   <property name="pixmap">
                    <pixmap>../ae4c3c7b/branchblack24.png</pixmap>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -621,7 +633,10 @@ color: rgb(255, 255, 255);</string>
                    </font>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true"/>
+                   <string notr="true">background-color: rgb(220, 220, 220);
+border: none;
+color: rgb(0, 0, 0);
+</string>
                   </property>
                   <item>
                    <property name="text">

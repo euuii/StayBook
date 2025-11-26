@@ -312,15 +312,21 @@ class Ui_Dialog(object):
         self.formLayout = QtWidgets.QFormLayout(self.frame_3)
         self.formLayout.setObjectName("formLayout")
         self.username_icon = QtWidgets.QLabel(parent=self.frame_3)
+        self.username_icon.setMinimumSize(QtCore.QSize(16, 16))
+        self.username_icon.setStyleSheet("")
         self.username_icon.setText("")
         self.username_icon.setPixmap(QtGui.QPixmap("../ae4c3c7b/branchblack24.png"))
+        self.username_icon.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.username_icon.setObjectName("username_icon")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.username_icon)
         self.branch_combobox = QtWidgets.QComboBox(parent=self.frame_3)
         font = QtGui.QFont()
         font.setPointSize(11)
         self.branch_combobox.setFont(font)
-        self.branch_combobox.setStyleSheet("")
+        self.branch_combobox.setStyleSheet("background-color: rgb(220, 220, 220);\n"
+"border: none;\n"
+"color: rgb(0, 0, 0);\n"
+"")
         self.branch_combobox.setObjectName("branch_combobox")
         self.branch_combobox.addItem("")
         self.branch_combobox.addItem("")

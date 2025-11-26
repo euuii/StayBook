@@ -2,8 +2,8 @@ from PyQt6.QtGui import QPixmap, QIcon, QBrush, QColor
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QPushButton, QWidget, QHBoxLayout
 from main_window import Ui_MainWindow
 from crud import CrudDialog, HotelDatabase
-from login import AccountDatabase
-
+from login import AccountDatabase 
+import os
 
 class MainWindow(QMainWindow):
     def __init__(self, username):
@@ -18,7 +18,10 @@ class MainWindow(QMainWindow):
         #Username for greetings
         self.username = username
         self.ui.username.setText(username.title())
-        self.db = HotelDatabase(username)  # Connect to database
+        if username == "Administrator":
+            self.db = None
+        else:
+            self.db = HotelDatabase(username)  # Connect to database
 
         # Connect buttons
         self.ui.room_btn.clicked.connect(self.showRooms)
@@ -524,11 +527,24 @@ class MainWindow(QMainWindow):
         branch = branch_db.get_branch_by_id(branch_id)
 
         if branch:
+            old_username = branch['username']
+
             # Open the crud dialog in edit mode for branch
             crudDialog = CrudDialog(self.username, parent=self, edit_mode=True, branch_data=branch,
                                     dialog_type="branch")
             crudDialog.ui.stackedWidget.setCurrentWidget(crudDialog.ui.branchedit_page)
             crudDialog.exec()
+
+            # Get updated data after editing
+            new_branch = branch_db.get_branch_by_id(branch_id)
+
+            if new_branch and new_branch['username'] != old_username:
+                old_file = f"branch_database/{old_username}.db"
+                new_file = f"branch_database/{new_branch['username']}.db"
+
+                if os.path.exists(old_file):
+                    os.rename(old_file, new_file)
+
         else:
             QMessageBox.warning(self, "Error", "Could not find branch data")
 
@@ -540,12 +556,18 @@ class MainWindow(QMainWindow):
 
         if result == QMessageBox.StandardButton.Yes:
             # Delete the branch from database
-            branch_db = AccountDatabase()
-            success = branch_db.delete_branch(branch_id)
 
+            branch_db = AccountDatabase()
+            branch = branch_db.get_branch_by_id(branch_id)
+            success = branch_db.delete_branch(branch_id)
+            branch_username = branch['username']  # Get the username from branch data
+            branch_db_file = f"branch_database/{branch_username}.db"
             if success:
+                if os.path.exists(branch_db_file):
+                    os.remove(branch_db_file)  # Remove the file
                 QMessageBox.information(self, "Success", "Branch deleted successfully")
                 self.display_branches()  # Refresh the table
+                
             else:
                 QMessageBox.warning(self, "Error", "Error deleting branch")
 

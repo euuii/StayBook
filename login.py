@@ -2,7 +2,6 @@ import sqlite3
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtWidgets import QDialog, QMessageBox, QLineEdit
-
 from login_dialog import Ui_Dialog
 
 class AccountDatabase:
@@ -139,9 +138,6 @@ class LoginDialog(QDialog):
 
         self.db = AccountDatabase()
 
-        #Default page
-        self.ui.stackedWidget.setCurrentWidget(self.ui.user_page)
-
         self.login_successful = False
         self.logged_in_username = None #Masudlan lang kung mag login dun
 
@@ -251,14 +247,17 @@ class LoginDialog(QDialog):
             QMessageBox.warning(
                 self, "Missing Information", "Please enter both password and confirm password."
             )
-        elif password != password2:
-            QMessageBox.warning(
-                self, "Password Mismatch", "Passwords do not match."
-            )
-        elif len(password) < 8:
+            return
+        if len(password) < 8:
             QMessageBox.warning(
                 self, "Weak Password", "Password must be at least 8 characters."
             )
+            return
+        if password != password2:
+            QMessageBox.warning(
+                self, "Password Mismatch", "Passwords do not match."
+            )
+            return
         else:
             success, message = self.db.create_administrator(password)
             if success:
@@ -267,7 +266,7 @@ class LoginDialog(QDialog):
                 self.ui.stackedWidget.setCurrentWidget(self.ui.user_page)
             else:
                 QMessageBox.warning(self, "Admin Error Creating", message)
-        return
+            return
 
     def handle_login_admin(self):
         password = self.ui.adminPass_Login.text().strip()

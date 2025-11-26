@@ -11,15 +11,15 @@ class HotelDatabase:
         # Initialize the database
         self.conn = None  # Connection to the database
         self.cursor = None  # Cursor to execute commands
-        self.username = f"{username}.db"
+        self.branch_db = f"{username}.db"
         self.connect_db()
 
     def connect_db(self):
         try:
-            if not os.path.exists("user_database"): #Checks if user_database folder exists
-                os.makedirs("user_database") # Creates user_database folder if not exist
+            if not os.path.exists("branch_database"): #Checks if branch_database folder exists
+                os.makedirs("branch_database") # Creates branch_database folder if not exist
 
-            self.conn = sqlite3.connect(f"user_database/{self.username}")  # Connect to the database based on username
+            self.conn = sqlite3.connect(f"branch_database/{self.branch_db}")  # Connect to the database based on username
             self.conn.row_factory = sqlite3.Row  # Access results by column name instead of index
             self.cursor = self.conn.cursor()  # Uses the cursor of our connection to execute commands
             self.cursor.execute("PRAGMA foreign_keys = ON") #Enable foreign key support
@@ -214,8 +214,9 @@ class CrudDialog(QDialog):
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.username = username
-        self.db = HotelDatabase(username)
+        self.db = None
+        if username != "Administrator":
+            self.db = HotelDatabase(username)
         self.parent_window = parent
         self.edit_mode = edit_mode
         self.room_data = room_data
@@ -494,7 +495,7 @@ class CrudDialog(QDialog):
 
         # Check password length
         elif len(password) < 8:
-            QMessageBox.warning(self, "Weak Password", "Password must be at least 6 characters")
+            QMessageBox.warning(self, "Weak Password", "Password must be at least 8 characters")
             return
 
         # Add branch to database
@@ -564,4 +565,3 @@ class CrudDialog(QDialog):
             self.close()
         else:
             QMessageBox.warning(self, "Error", message)
-
