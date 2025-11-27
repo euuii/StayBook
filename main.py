@@ -100,7 +100,7 @@ class MainWindow(QMainWindow):
         self.filter_rooms()
 
     def filter_rooms(self):
-        # Make sure we have data loaded
+        # Make sure we have data loaded, display all data from database if search bar is empty
         if not self.all_rooms:
             self.all_rooms = self.db.get_all_rooms()
         

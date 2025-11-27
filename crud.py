@@ -1,6 +1,7 @@
 import sqlite3
 import os
-from PyQt6.QtWidgets import QDialog, QMessageBox
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QDialog, QMessageBox, QLineEdit
 from PyQt6.QtCore import QDate
 from crud_dialog import Ui_Dialog
 from login import AccountDatabase
@@ -236,11 +237,21 @@ class CrudDialog(QDialog):
         self.ui.btn_addBranch.clicked.connect(self.add_branch)
         self.ui.btn_updateBranch.clicked.connect(self.update_branch)
 
-        # Connect cancel buttons
-        self.ui.cancel_btn_3.clicked.connect(self.close)
-        self.ui.cancel_btn_4.clicked.connect(self.close)
-        self.ui.cancel_btn_5.clicked.connect(self.close)
-        self.ui.cancel_btn_6.clicked.connect(self.close)
+        # Show password functions on branch crud dialog
+        self.showpass_icon = QIcon(f"icons/showpassword16.png")
+        self.hidepass_icon = QIcon(f"icons/hidepassword16.png")
+
+        self.ui.btn_showpass.setIcon(self.showpass_icon)
+        self.ui.btn_showpass.clicked.connect(self.showpassword)
+
+        self.ui.btn_showpass_2.setIcon(self.showpass_icon)
+        self.ui.btn_showpass_2.clicked.connect(self.showpassword_2)
+
+        self.ui.btn_showpass_3.setIcon(self.showpass_icon)
+        self.ui.btn_showpass_3.clicked.connect(self.showpassword_3)
+
+        self.ui.btn_showpass_4.setIcon(self.showpass_icon)
+        self.ui.btn_showpass_4.clicked.connect(self.showpassword_4)
 
         # If this is a reservation dialog, make the date pickers easier to use
         if dialog_type == "reservation":
@@ -283,6 +294,38 @@ class CrudDialog(QDialog):
         # If we are in edit mode for branch, fill the form with branch data
         if self.edit_mode and self.branch_data and dialog_type == "branch":
             self.fill_branch_edit_form()
+
+    def showpassword(self):
+        if self.ui.lineEdit_branchPass_3.echoMode() == QLineEdit.EchoMode.Password:
+            self.ui.lineEdit_branchPass_3.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.ui.btn_showpass.setIcon(self.hidepass_icon)
+        else:
+            self.ui.lineEdit_branchPass_3.setEchoMode(QLineEdit.EchoMode.Password)
+            self.ui.btn_showpass.setIcon(self.showpass_icon)
+
+    def showpassword_2(self):
+        if self.ui.lineEdit_branchConfPass_3.echoMode() == QLineEdit.EchoMode.Password:
+            self.ui.lineEdit_branchConfPass_3.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.ui.btn_showpass_2.setIcon(self.hidepass_icon)
+        else:
+            self.ui.lineEdit_branchConfPass_3.setEchoMode(QLineEdit.EchoMode.Password)
+            self.ui.btn_showpass_2.setIcon(self.showpass_icon)
+
+    def showpassword_3(self):
+        if self.ui.lineEdit_branchPass_2.echoMode() == QLineEdit.EchoMode.Password:
+            self.ui.lineEdit_branchPass_2.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.ui.btn_showpass_3.setIcon(self.hidepass_icon)
+        else:
+            self.ui.lineEdit_branchPass_2.setEchoMode(QLineEdit.EchoMode.Password)
+            self.ui.btn_showpass_3.setIcon(self.showpass_icon)
+
+    def showpassword_4(self):
+        if self.ui.lineEdit_branchConfPass_2.echoMode() == QLineEdit.EchoMode.Password:
+            self.ui.lineEdit_branchConfPass_2.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.ui.btn_showpass_4.setIcon(self.hidepass_icon)
+        else:
+            self.ui.lineEdit_branchConfPass_2.setEchoMode(QLineEdit.EchoMode.Password)
+            self.ui.btn_showpassword_4.setIcon(self.showpass_icon)
 
     def fill_room_edit_form(self):
         # Fill the edit form with existing room data
@@ -416,6 +459,10 @@ class CrudDialog(QDialog):
             QMessageBox.warning(self, "Invalid Input", "Please fill in all fields")
             return
 
+        if not contact.isdigit():
+            QMessageBox.warning(self, "Invalid Contact", "Contact must only consist of digits")
+            return
+
         if checkout_qdate <= checkin_qdate:
             QMessageBox.warning(self, "Invalid Dates", "Check-out date must be after the check-in date.")
             return
@@ -454,6 +501,10 @@ class CrudDialog(QDialog):
             QMessageBox.warning(self, "Invalid Input", "Please fill in all fields")
             return
 
+        if not contact.isdigit():
+            QMessageBox.warning(self, "Invalid Contact", "Contact must only consist of digits")
+            return
+
         if checkout_qdate <= checkin_qdate:
             QMessageBox.warning(self, "Invalid Dates", "Check-out date must be after the check-in date.")
             return
@@ -478,8 +529,8 @@ class CrudDialog(QDialog):
     def add_branch(self):
         # Get values from input fields
         branch_name = self.ui.lineEdit_branchName.text().strip()
-        password = self.ui.lineEdit_branchPass.text().strip()
-        confirm_password = self.ui.lineEdit_branchConfPass.text().strip()
+        password = self.ui.lineEdit_branchPass_3.text().strip()
+        confirm_password = self.ui.lineEdit_branchConfPass_3.text().strip()
         address = self.ui.lineEdit_branchAddress.text().strip()
         contact = self.ui.lineEdit_branchContact.text().strip()
 
@@ -489,13 +540,18 @@ class CrudDialog(QDialog):
             return
 
         # Check if passwords match
-        elif password != confirm_password:
+        if password != confirm_password:
             QMessageBox.warning(self, "Password Mismatch", "Passwords do not match")
             return
 
         # Check password length
-        elif len(password) < 8:
+        if len(password) < 8:
             QMessageBox.warning(self, "Weak Password", "Password must be at least 8 characters")
+            return
+        
+        # Check if contact has letters on it
+        if not contact.isdigit():
+            QMessageBox.warning(self, "Invalid Contact", "Contact must only consist of digits")
             return
 
         # Add branch to database
@@ -542,6 +598,10 @@ class CrudDialog(QDialog):
         # Check password length
         if len(password) < 6:
             QMessageBox.warning(self, "Weak Password", "Password must be at least 6 characters")
+            return
+        
+        if not contact.isdigit():
+            QMessageBox.warning(self, "Invalid Contact", "Contact must only consist of digits")
             return
 
         # Update branch in database

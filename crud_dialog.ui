@@ -40,7 +40,7 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="roomedit_page">
       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1164,8 +1164,34 @@ border: None;
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="lineEdit_branchName"/>
+         <item row="5" column="1">
+          <widget class="QLabel" name="label_37">
+           <property name="text">
+            <string>Contact</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="lineEdit_branchContact"/>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_20">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>25</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="lineEdit_branchAddress"/>
          </item>
          <item row="0" column="1">
           <widget class="QLabel" name="label_33">
@@ -1183,13 +1209,6 @@ border: None;
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
-          <widget class="QLabel" name="label_37">
-           <property name="text">
-            <string>Contact</string>
-           </property>
-          </widget>
-         </item>
          <item row="3" column="1">
           <widget class="QLabel" name="label_36">
            <property name="text">
@@ -1197,27 +1216,8 @@ border: None;
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
-          <widget class="QLineEdit" name="lineEdit_branchContact"/>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="lineEdit_branchAddress"/>
-         </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_20">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Policy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>25</height>
-            </size>
-           </property>
-          </spacer>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineEdit_branchName"/>
          </item>
          <item row="0" column="0">
           <spacer name="horizontalSpacer_19">
@@ -1236,18 +1236,18 @@ border: None;
           </spacer>
          </item>
          <item row="2" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_20">
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_45">
+             <property name="text">
+              <string>Confirm Password</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
-              <widget class="QLabel" name="label_34">
-               <property name="text">
-                <string>Password</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_branchPass">
+              <widget class="QLineEdit" name="lineEdit_branchPass_3">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -1256,22 +1256,29 @@ border: None;
                </property>
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Password</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_showpass">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../85fe6ff2/showpassword16.png</normaloff>../85fe6ff2/showpassword16.png</iconset>
                </property>
               </widget>
              </item>
             </layout>
            </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_21">
+           <item row="1" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
-              <widget class="QLabel" name="label_35">
-               <property name="text">
-                <string>Confirm Password</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_branchConfPass">
+              <widget class="QLineEdit" name="lineEdit_branchConfPass_3">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -1283,7 +1290,44 @@ border: None;
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QPushButton" name="btn_showpass_2">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../85fe6ff2/showpassword16.png</normaloff>../85fe6ff2/showpassword16.png</iconset>
+               </property>
+              </widget>
+             </item>
             </layout>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_46">
+             <property name="text">
+              <string>Password</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <spacer name="horizontalSpacer_25">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Policy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>10</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -1409,8 +1453,12 @@ border: None;
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="lineEdit_branchName_2"/>
+         <item row="5" column="1">
+          <widget class="QLabel" name="label_44">
+           <property name="text">
+            <string>Contact</string>
+           </property>
+          </widget>
          </item>
          <item row="0" column="0">
           <spacer name="horizontalSpacer_21">
@@ -1428,15 +1476,8 @@ border: None;
            </property>
           </spacer>
          </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="lineEdit_branchAddress_2"/>
-         </item>
-         <item row="5" column="1">
-          <widget class="QLabel" name="label_44">
-           <property name="text">
-            <string>Contact</string>
-           </property>
-          </widget>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="lineEdit_branchContact_2"/>
          </item>
          <item row="0" column="2">
           <spacer name="horizontalSpacer_22">
@@ -1454,6 +1495,9 @@ border: None;
            </property>
           </spacer>
          </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="lineEdit_branchAddress_2"/>
+         </item>
          <item row="3" column="1">
           <widget class="QLabel" name="label_42">
            <property name="text">
@@ -1468,20 +1512,13 @@ border: None;
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
-          <widget class="QLineEdit" name="lineEdit_branchContact_2"/>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineEdit_branchName_2"/>
          </item>
          <item row="2" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_22">
-             <item>
-              <widget class="QLabel" name="label_41">
-               <property name="text">
-                <string>Password</string>
-               </property>
-              </widget>
-             </item>
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="1" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
               <widget class="QLineEdit" name="lineEdit_branchPass_2">
                <property name="echoMode">
@@ -1489,17 +1526,28 @@ border: None;
                </property>
               </widget>
              </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_23">
              <item>
-              <widget class="QLabel" name="label_43">
+              <widget class="QPushButton" name="btn_showpass_3">
                <property name="text">
-                <string>Confirm Password</string>
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../85fe6ff2/showpassword16.png</normaloff>../85fe6ff2/showpassword16.png</iconset>
                </property>
               </widget>
              </item>
+            </layout>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_43">
+             <property name="text">
+              <string>Confirm Password</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
              <item>
               <widget class="QLineEdit" name="lineEdit_branchConfPass_2">
                <property name="echoMode">
@@ -1507,7 +1555,41 @@ border: None;
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QPushButton" name="btn_showpass_4">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../85fe6ff2/showpassword16.png</normaloff>../85fe6ff2/showpassword16.png</iconset>
+               </property>
+              </widget>
+             </item>
             </layout>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_41">
+             <property name="text">
+              <string>Password</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <spacer name="horizontalSpacer_26">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Policy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>10</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -1593,15 +1675,11 @@ color: rgb(255, 255, 255);</string>
  </widget>
  <tabstops>
   <tabstop>lineEdit_branchName</tabstop>
-  <tabstop>lineEdit_branchPass</tabstop>
-  <tabstop>lineEdit_branchConfPass</tabstop>
   <tabstop>lineEdit_branchAddress</tabstop>
   <tabstop>lineEdit_branchContact</tabstop>
   <tabstop>cancel_btn_5</tabstop>
   <tabstop>btn_addBranch</tabstop>
   <tabstop>lineEdit_branchName_2</tabstop>
-  <tabstop>lineEdit_branchPass_2</tabstop>
-  <tabstop>lineEdit_branchConfPass_2</tabstop>
   <tabstop>lineEdit_branchAddress_2</tabstop>
   <tabstop>lineEdit_branchContact_2</tabstop>
   <tabstop>cancel_btn_6</tabstop>
@@ -1646,8 +1724,8 @@ color: rgb(255, 255, 255);</string>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>572</x>
-     <y>467</y>
+     <x>612</x>
+     <y>380</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1662,8 +1740,8 @@ color: rgb(255, 255, 255);</string>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>597</x>
-     <y>467</y>
+     <x>637</x>
+     <y>380</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1678,8 +1756,8 @@ color: rgb(255, 255, 255);</string>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>58</x>
-     <y>23</y>
+     <x>570</x>
+     <y>366</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1694,12 +1772,44 @@ color: rgb(255, 255, 255);</string>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>58</x>
-     <y>23</y>
+     <x>545</x>
+     <y>366</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
      <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cancel_btn_5</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>595</x>
+     <y>354</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cancel_btn_6</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>573</x>
+     <y>361</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>59</x>
+     <y>-12</y>
     </hint>
    </hints>
   </connection>
