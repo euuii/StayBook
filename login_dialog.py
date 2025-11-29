@@ -525,7 +525,7 @@ class Ui_Dialog(object):
         self.verticalLayout_7.addWidget(self.verticalFrame)
 
         self.retranslateUi(Dialog)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):

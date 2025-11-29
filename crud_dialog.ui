@@ -40,7 +40,7 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="roomedit_page">
       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1675,11 +1675,19 @@ color: rgb(255, 255, 255);</string>
  </widget>
  <tabstops>
   <tabstop>lineEdit_branchName</tabstop>
+  <tabstop>lineEdit_branchPass_3</tabstop>
+  <tabstop>btn_showpass</tabstop>
+  <tabstop>lineEdit_branchConfPass_3</tabstop>
+  <tabstop>btn_showpass_2</tabstop>
   <tabstop>lineEdit_branchAddress</tabstop>
   <tabstop>lineEdit_branchContact</tabstop>
   <tabstop>cancel_btn_5</tabstop>
   <tabstop>btn_addBranch</tabstop>
   <tabstop>lineEdit_branchName_2</tabstop>
+  <tabstop>lineEdit_branchPass_2</tabstop>
+  <tabstop>btn_showpass_3</tabstop>
+  <tabstop>lineEdit_branchConfPass_2</tabstop>
+  <tabstop>btn_showpass_4</tabstop>
   <tabstop>lineEdit_branchAddress_2</tabstop>
   <tabstop>lineEdit_branchContact_2</tabstop>
   <tabstop>cancel_btn_6</tabstop>

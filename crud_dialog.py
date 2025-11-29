@@ -746,7 +746,7 @@ class Ui_Dialog(object):
         self.verticalLayout_28.addWidget(self.stackedWidget)
 
         self.retranslateUi(Dialog)
-        self.stackedWidget.setCurrentIndex(5)
+        self.stackedWidget.setCurrentIndex(4)
         self.cancel_btn.clicked.connect(Dialog.close) # type: ignore
         self.cancel_btn_2.clicked.connect(Dialog.close) # type: ignore
         self.cancel_btn_3.clicked.connect(Dialog.close) # type: ignore
@@ -754,12 +754,20 @@ class Ui_Dialog(object):
         self.cancel_btn_5.clicked.connect(Dialog.close) # type: ignore
         self.cancel_btn_6.clicked.connect(Dialog.close) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        Dialog.setTabOrder(self.lineEdit_branchName, self.lineEdit_branchAddress)
+        Dialog.setTabOrder(self.lineEdit_branchName, self.lineEdit_branchPass_3)
+        Dialog.setTabOrder(self.lineEdit_branchPass_3, self.btn_showpass)
+        Dialog.setTabOrder(self.btn_showpass, self.lineEdit_branchConfPass_3)
+        Dialog.setTabOrder(self.lineEdit_branchConfPass_3, self.btn_showpass_2)
+        Dialog.setTabOrder(self.btn_showpass_2, self.lineEdit_branchAddress)
         Dialog.setTabOrder(self.lineEdit_branchAddress, self.lineEdit_branchContact)
         Dialog.setTabOrder(self.lineEdit_branchContact, self.cancel_btn_5)
         Dialog.setTabOrder(self.cancel_btn_5, self.btn_addBranch)
         Dialog.setTabOrder(self.btn_addBranch, self.lineEdit_branchName_2)
-        Dialog.setTabOrder(self.lineEdit_branchName_2, self.lineEdit_branchAddress_2)
+        Dialog.setTabOrder(self.lineEdit_branchName_2, self.lineEdit_branchPass_2)
+        Dialog.setTabOrder(self.lineEdit_branchPass_2, self.btn_showpass_3)
+        Dialog.setTabOrder(self.btn_showpass_3, self.lineEdit_branchConfPass_2)
+        Dialog.setTabOrder(self.lineEdit_branchConfPass_2, self.btn_showpass_4)
+        Dialog.setTabOrder(self.btn_showpass_4, self.lineEdit_branchAddress_2)
         Dialog.setTabOrder(self.lineEdit_branchAddress_2, self.lineEdit_branchContact_2)
         Dialog.setTabOrder(self.lineEdit_branchContact_2, self.cancel_btn_6)
         Dialog.setTabOrder(self.cancel_btn_6, self.btn_updateBranch)
