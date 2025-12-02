@@ -245,6 +245,10 @@ class CrudDialog(QDialog):
             return
 
         # Update in database
+        current_room = self.db.get_room_by_number(room_number)
+        if current_room['status'] == "Occupied" and status != current_room['status']:
+            QMessageBox.warning(self, "Cannot Edit", "Room is occupied. Please cancel the reservation first.")
+            return
         success, message = self.db.update_room(room_number, room_type, price_rate, status, capacity, description)
 
         if success:
