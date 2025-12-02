@@ -91,6 +91,7 @@ class MainWindow(QMainWindow):
     def display_rooms(self):
         # Get all rooms from database
         self.all_rooms = self.db.get_all_rooms()
+
         # Show filtered rooms
         self.filter_rooms()
 
@@ -157,7 +158,7 @@ class MainWindow(QMainWindow):
         capacity = str(room['capacity'] if room['capacity'] is not None else '').lower()
         description = str(room['description'] if room['description'] is not None else '').lower()
 
-        # If no search text, show all
+        # If search text is empty, show all
         if search_text == "":
             return True
 
@@ -276,6 +277,7 @@ class MainWindow(QMainWindow):
     def display_reservations(self):
         # Get all reservations from database
         self.all_reservations = self.db.get_all_reservations()
+
         # Show filtered reservations
         self.filter_reservations()
 
